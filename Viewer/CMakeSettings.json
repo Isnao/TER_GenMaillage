@@ -1,0 +1,97 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "Qt5_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5Gui_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5Gui",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5Xml_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5Xml",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5Widgets_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5Widgets",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5Svg_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5Svg",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5Script_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5Script",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5ScriptTools_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5ScriptTools",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5OpenGL_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5OpenGL",
+          "type": "PATH"
+        },
+        {
+          "name": "Qt5Core_DIR",
+          "value": "D:/Qt/5.9.9/msvc2017_64/lib/cmake/Qt5Core",
+          "type": "PATH"
+        },
+        {
+          "name": "EIGEN3_INCLUDE_DIR",
+          "value": "D:/Mesh/eigen-3.3.7",
+          "type": "PATH"
+        },
+        {
+          "name": "ZLIB_INCLUDE_DIR",
+          "value": "D:/zlib-1.2.11",
+          "type": "PATH"
+        },
+        {
+          "name": "Boost_ZLIB_LIBRARY_RELEASE",
+          "value": "D:/boost_1_72_0/lib64-msvc-14.2/boost_zlib-vc142-mt-gd-x64-1_72.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "Boost_ZLIB_LIBRARY_DEBUG",
+          "value": "D:/boost_1_72_0/lib64-msvc-14.2/boost_zlib-vc142-mt-x64-1_72.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "Boost_INCLUDE_DIR",
+          "value": "D:/boost_1_66_0",
+          "type": "PATH"
+        },
+        {
+          "name": "ZLIB_LIBRARY_DEBUG",
+          "value": "D:/zlib-1.2.11/out/build/x64-Debug/zlibd.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "ZLIB_LIBRARY_RELEASE",
+          "value": "D:/zlib-1.2.11/out/build/x64-Release/zlib.lib",
+          "type": "FILEPATH"
+        }
+      ]
+    }
+  ]
+}
