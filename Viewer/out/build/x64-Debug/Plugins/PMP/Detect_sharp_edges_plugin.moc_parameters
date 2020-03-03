@@ -1,0 +1,17 @@
+-ID:/CGAL/demo/Polyhedron/./CGAL_demo
+-ID:/CGAL/demo/Polyhedron/./include
+-ID:/CGAL/demo/Polyhedron/.
+-ID:/CGAL/demo/Polyhedron/out/build/x64-Debug
+-ID:/CGAL/include
+-ID:/Mesh/eigen-3.3.7
+-ID:/CGAL/demo/Polyhedron/Plugins/PMP
+-ID:/CGAL/demo/Polyhedron/out/build/x64-Debug/Plugins/PMP
+-DQT_NO_KEYWORDS
+-DSCENE_IMAGE_GL_BUFFERS_AVAILABLE
+-DCGAL_EIGEN3_ENABLED
+-DUSE_FORWARD_DECL
+-DWIN32
+--compiler-flavor=msvc
+-o
+D:/CGAL/demo/Polyhedron/out/build/x64-Debug/Plugins/PMP/Detect_sharp_edges_plugin.moc
+D:/CGAL/demo/Polyhedron/Plugins/PMP/Detect_sharp_edges_plugin.cpp

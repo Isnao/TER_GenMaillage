@@ -1,0 +1,335 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'Basic_generator_plugin.cpp'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.9)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#include <QtCore/qplugin.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'Basic_generator_plugin.cpp' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.9.9. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
+struct qt_meta_stringdata_GeneratorWidget_t {
+    QByteArrayData data[1];
+    char stringdata0[16];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_GeneratorWidget_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_GeneratorWidget_t qt_meta_stringdata_GeneratorWidget = {
+    {
+QT_MOC_LITERAL(0, 0, 15) // "GeneratorWidget"
+
+    },
+    "GeneratorWidget"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_GeneratorWidget[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void GeneratorWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject GeneratorWidget::staticMetaObject = {
+    { &QDockWidget::staticMetaObject, qt_meta_stringdata_GeneratorWidget.data,
+      qt_meta_data_GeneratorWidget,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *GeneratorWidget::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *GeneratorWidget::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_GeneratorWidget.stringdata0))
+        return static_cast<void*>(this);
+    if (!strcmp(_clname, "Ui::BasicGenerator"))
+        return static_cast< Ui::BasicGenerator*>(this);
+    return QDockWidget::qt_metacast(_clname);
+}
+
+int GeneratorWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QDockWidget::qt_metacall(_c, _id, _a);
+    return _id;
+}
+struct qt_meta_stringdata_Basic_generator_plugin_t {
+    QByteArrayData data[13];
+    char stringdata0[286];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_Basic_generator_plugin_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_Basic_generator_plugin_t qt_meta_stringdata_Basic_generator_plugin = {
+    {
+QT_MOC_LITERAL(0, 0, 22), // "Basic_generator_plugin"
+QT_MOC_LITERAL(1, 23, 24), // "on_actionPrism_triggered"
+QT_MOC_LITERAL(2, 48, 0), // ""
+QT_MOC_LITERAL(3, 49, 25), // "on_actionSphere_triggered"
+QT_MOC_LITERAL(4, 75, 26), // "on_actionPyramid_triggered"
+QT_MOC_LITERAL(5, 102, 29), // "on_actionHexahedron_triggered"
+QT_MOC_LITERAL(6, 132, 30), // "on_actionTetrahedron_triggered"
+QT_MOC_LITERAL(7, 163, 23), // "on_actionGrid_triggered"
+QT_MOC_LITERAL(8, 187, 27), // "on_actionPointSet_triggered"
+QT_MOC_LITERAL(9, 215, 27), // "on_actionPolyline_triggered"
+QT_MOC_LITERAL(10, 243, 19), // "on_generate_clicked"
+QT_MOC_LITERAL(11, 263, 14), // "on_tab_changed"
+QT_MOC_LITERAL(12, 278, 7) // "closure"
+
+    },
+    "Basic_generator_plugin\0on_actionPrism_triggered\0"
+    "\0on_actionSphere_triggered\0"
+    "on_actionPyramid_triggered\0"
+    "on_actionHexahedron_triggered\0"
+    "on_actionTetrahedron_triggered\0"
+    "on_actionGrid_triggered\0"
+    "on_actionPointSet_triggered\0"
+    "on_actionPolyline_triggered\0"
+    "on_generate_clicked\0on_tab_changed\0"
+    "closure"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_Basic_generator_plugin[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+      11,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,   69,    2, 0x0a /* Public */,
+       3,    0,   70,    2, 0x0a /* Public */,
+       4,    0,   71,    2, 0x0a /* Public */,
+       5,    0,   72,    2, 0x0a /* Public */,
+       6,    0,   73,    2, 0x0a /* Public */,
+       7,    0,   74,    2, 0x0a /* Public */,
+       8,    0,   75,    2, 0x0a /* Public */,
+       9,    0,   76,    2, 0x0a /* Public */,
+      10,    0,   77,    2, 0x0a /* Public */,
+      11,    0,   78,    2, 0x0a /* Public */,
+      12,    0,   79,    2, 0x0a /* Public */,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+
+       0        // eod
+};
+
+void Basic_generator_plugin::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Basic_generator_plugin *_t = static_cast<Basic_generator_plugin *>(_o);
+        Q_UNUSED(_t)
+        switch (_id) {
+        case 0: _t->on_actionPrism_triggered(); break;
+        case 1: _t->on_actionSphere_triggered(); break;
+        case 2: _t->on_actionPyramid_triggered(); break;
+        case 3: _t->on_actionHexahedron_triggered(); break;
+        case 4: _t->on_actionTetrahedron_triggered(); break;
+        case 5: _t->on_actionGrid_triggered(); break;
+        case 6: _t->on_actionPointSet_triggered(); break;
+        case 7: _t->on_actionPolyline_triggered(); break;
+        case 8: _t->on_generate_clicked(); break;
+        case 9: _t->on_tab_changed(); break;
+        case 10: _t->closure(); break;
+        default: ;
+        }
+    }
+    Q_UNUSED(_a);
+}
+
+const QMetaObject Basic_generator_plugin::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_Basic_generator_plugin.data,
+      qt_meta_data_Basic_generator_plugin,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *Basic_generator_plugin::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *Basic_generator_plugin::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_Basic_generator_plugin.stringdata0))
+        return static_cast<void*>(this);
+    if (!strcmp(_clname, "Polyhedron_demo_plugin_helper"))
+        return static_cast< Polyhedron_demo_plugin_helper*>(this);
+    if (!strcmp(_clname, "com.geometryfactory.PolyhedronDemo.PluginInterface/1.0"))
+        return static_cast< CGAL::Three::Polyhedron_demo_plugin_interface*>(this);
+    return QObject::qt_metacast(_clname);
+}
+
+int Basic_generator_plugin::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 11)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 11;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 11)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 11;
+    }
+    return _id;
+}
+
+QT_PLUGIN_METADATA_SECTION const uint qt_section_alignment_dummy = 42;
+
+#ifdef QT_NO_DEBUG
+
+QT_PLUGIN_METADATA_SECTION
+static const unsigned char qt_pluginMetaData[] = {
+    'Q', 'T', 'M', 'E', 'T', 'A', 'D', 'A', 'T', 'A', ' ', ' ',
+    'q',  'b',  'j',  's',  0x01, 0x00, 0x00, 0x00,
+    '8',  0x01, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    '$',  0x01, 0x00, 0x00, 0x1b, 0x03, 0x00, 0x00,
+    0x03, 0x00, 'I',  'I',  'D',  0x00, 0x00, 0x00,
+    '6',  0x00, 'c',  'o',  'm',  '.',  'g',  'e', 
+    'o',  'm',  'e',  't',  'r',  'y',  'f',  'a', 
+    'c',  't',  'o',  'r',  'y',  '.',  'P',  'o', 
+    'l',  'y',  'h',  'e',  'd',  'r',  'o',  'n', 
+    'D',  'e',  'm',  'o',  '.',  'P',  'l',  'u', 
+    'g',  'i',  'n',  'I',  'n',  't',  'e',  'r', 
+    'f',  'a',  'c',  'e',  '/',  '1',  '.',  '0', 
+    0x1b, 0x0c, 0x00, 0x00, 0x09, 0x00, 'c',  'l', 
+    'a',  's',  's',  'N',  'a',  'm',  'e',  0x00,
+    0x16, 0x00, 'B',  'a',  's',  'i',  'c',  '_', 
+    'g',  'e',  'n',  'e',  'r',  'a',  't',  'o', 
+    'r',  '_',  'p',  'l',  'u',  'g',  'i',  'n', 
+    ':',  '!',  0xa1, 0x00, 0x07, 0x00, 'v',  'e', 
+    'r',  's',  'i',  'o',  'n',  0x00, 0x00, 0x00,
+    0x11, 0x00, 0x00, 0x00, 0x05, 0x00, 'd',  'e', 
+    'b',  'u',  'g',  0x00, 0x95, 0x14, 0x00, 0x00,
+    0x08, 0x00, 'M',  'e',  't',  'a',  'D',  'a', 
+    't',  'a',  0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
+    0x05, 0x00, 0x00, 0x00, 'x',  0x00, 0x00, 0x00,
+    0x94, 0x03, 0x00, 0x00, 0x08, 0x00, 'K',  'e', 
+    'y',  'w',  'o',  'r',  'd',  's',  0x00, 0x00,
+    '8',  0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+    '0',  0x00, 0x00, 0x00, 0x0b, 0x00, 'P',  'o', 
+    'l',  'y',  'g',  'o',  'n',  'M',  'e',  's', 
+    'h',  0x00, 0x00, 0x00, 0x12, 0x00, 'P',  'o', 
+    'i',  'n',  't',  'S',  'e',  't',  'P',  'r', 
+    'o',  'c',  'e',  's',  's',  'i',  'n',  'g', 
+    0x8b, 0x01, 0x00, 0x00, 0x8b, 0x03, 0x00, 0x00,
+    0x9b, 0x0c, 0x00, 0x00, 0x0a, 0x00, 'C',  'o', 
+    'n',  'f',  'i',  'g',  'D',  'a',  't',  'e', 
+    0x10, 0x00, '2',  '0',  '2',  '0',  '-',  '0', 
+    '2',  '-',  '1',  '3',  ' ',  '2',  '2',  ':', 
+    '4',  '3',  0x00, 0x00, 'T',  0x00, 0x00, 0x00,
+    0x0c, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00,
+    0x94, 0x00, 0x00, 0x00, 'P',  0x00, 0x00, 0x00,
+    0x88, 0x00, 0x00, 0x00, 'x',  0x00, 0x00, 0x00
+};
+
+#else // QT_NO_DEBUG
+
+QT_PLUGIN_METADATA_SECTION
+static const unsigned char qt_pluginMetaData[] = {
+    'Q', 'T', 'M', 'E', 'T', 'A', 'D', 'A', 'T', 'A', ' ', ' ',
+    'q',  'b',  'j',  's',  0x01, 0x00, 0x00, 0x00,
+    '8',  0x01, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    '$',  0x01, 0x00, 0x00, 0x1b, 0x03, 0x00, 0x00,
+    0x03, 0x00, 'I',  'I',  'D',  0x00, 0x00, 0x00,
+    '6',  0x00, 'c',  'o',  'm',  '.',  'g',  'e', 
+    'o',  'm',  'e',  't',  'r',  'y',  'f',  'a', 
+    'c',  't',  'o',  'r',  'y',  '.',  'P',  'o', 
+    'l',  'y',  'h',  'e',  'd',  'r',  'o',  'n', 
+    'D',  'e',  'm',  'o',  '.',  'P',  'l',  'u', 
+    'g',  'i',  'n',  'I',  'n',  't',  'e',  'r', 
+    'f',  'a',  'c',  'e',  '/',  '1',  '.',  '0', 
+    0x15, 0x0c, 0x00, 0x00, 0x08, 0x00, 'M',  'e', 
+    't',  'a',  'D',  'a',  't',  'a',  0x00, 0x00,
+    0x80, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
+    'x',  0x00, 0x00, 0x00, 0x94, 0x03, 0x00, 0x00,
+    0x08, 0x00, 'K',  'e',  'y',  'w',  'o',  'r', 
+    'd',  's',  0x00, 0x00, '8',  0x00, 0x00, 0x00,
+    0x04, 0x00, 0x00, 0x00, '0',  0x00, 0x00, 0x00,
+    0x0b, 0x00, 'P',  'o',  'l',  'y',  'g',  'o', 
+    'n',  'M',  'e',  's',  'h',  0x00, 0x00, 0x00,
+    0x12, 0x00, 'P',  'o',  'i',  'n',  't',  'S', 
+    'e',  't',  'P',  'r',  'o',  'c',  'e',  's', 
+    's',  'i',  'n',  'g',  0x8b, 0x01, 0x00, 0x00,
+    0x8b, 0x03, 0x00, 0x00, 0x9b, 0x0c, 0x00, 0x00,
+    0x0a, 0x00, 'C',  'o',  'n',  'f',  'i',  'g', 
+    'D',  'a',  't',  'e',  0x10, 0x00, '2',  '0', 
+    '2',  '0',  '-',  '0',  '2',  '-',  '1',  '3', 
+    ' ',  '2',  '2',  ':',  '4',  '3',  0x00, 0x00,
+    'T',  0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00,
+    0x1b, 0x1e, 0x00, 0x00, 0x09, 0x00, 'c',  'l', 
+    'a',  's',  's',  'N',  'a',  'm',  'e',  0x00,
+    0x16, 0x00, 'B',  'a',  's',  'i',  'c',  '_', 
+    'g',  'e',  'n',  'e',  'r',  'a',  't',  'o', 
+    'r',  '_',  'p',  'l',  'u',  'g',  'i',  'n', 
+    '1',  0x00, 0x00, 0x00, 0x05, 0x00, 'd',  'e', 
+    'b',  'u',  'g',  0x00, ':',  '!',  0xa1, 0x00,
+    0x07, 0x00, 'v',  'e',  'r',  's',  'i',  'o', 
+    'n',  0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00,
+    'P',  0x00, 0x00, 0x00, 0xe0, 0x00, 0x00, 0x00,
+    0x08, 0x01, 0x00, 0x00, 0x14, 0x01, 0x00, 0x00
+};
+#endif // QT_NO_DEBUG
+
+QT_MOC_EXPORT_PLUGIN(Basic_generator_plugin, Basic_generator_plugin)
+
+QT_WARNING_POP
+QT_END_MOC_NAMESPACE

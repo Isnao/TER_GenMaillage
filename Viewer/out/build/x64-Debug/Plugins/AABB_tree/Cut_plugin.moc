@@ -1,0 +1,460 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'Cut_plugin.cpp'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.9)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#include <QtCore/qplugin.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'Cut_plugin.cpp' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.9.9. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
+struct qt_meta_stringdata_Scene_aabb_item_t {
+    QByteArrayData data[1];
+    char stringdata0[16];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_Scene_aabb_item_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_Scene_aabb_item_t qt_meta_stringdata_Scene_aabb_item = {
+    {
+QT_MOC_LITERAL(0, 0, 15) // "Scene_aabb_item"
+
+    },
+    "Scene_aabb_item"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_Scene_aabb_item[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void Scene_aabb_item::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject Scene_aabb_item::staticMetaObject = {
+    { &CGAL::Three::Scene_item_rendering_helper::staticMetaObject, qt_meta_stringdata_Scene_aabb_item.data,
+      qt_meta_data_Scene_aabb_item,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *Scene_aabb_item::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *Scene_aabb_item::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_Scene_aabb_item.stringdata0))
+        return static_cast<void*>(this);
+    return CGAL::Three::Scene_item_rendering_helper::qt_metacast(_clname);
+}
+
+int Scene_aabb_item::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = CGAL::Three::Scene_item_rendering_helper::qt_metacall(_c, _id, _a);
+    return _id;
+}
+struct qt_meta_stringdata_Scene_edges_item_t {
+    QByteArrayData data[1];
+    char stringdata0[17];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_Scene_edges_item_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_Scene_edges_item_t qt_meta_stringdata_Scene_edges_item = {
+    {
+QT_MOC_LITERAL(0, 0, 16) // "Scene_edges_item"
+
+    },
+    "Scene_edges_item"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_Scene_edges_item[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void Scene_edges_item::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject Scene_edges_item::staticMetaObject = {
+    { &CGAL::Three::Scene_item_rendering_helper::staticMetaObject, qt_meta_stringdata_Scene_edges_item.data,
+      qt_meta_data_Scene_edges_item,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *Scene_edges_item::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *Scene_edges_item::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_Scene_edges_item.stringdata0))
+        return static_cast<void*>(this);
+    return CGAL::Three::Scene_item_rendering_helper::qt_metacast(_clname);
+}
+
+int Scene_edges_item::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = CGAL::Three::Scene_item_rendering_helper::qt_metacall(_c, _id, _a);
+    return _id;
+}
+struct qt_meta_stringdata_Scene_aabb_plane_item_t {
+    QByteArrayData data[1];
+    char stringdata0[22];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_Scene_aabb_plane_item_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_Scene_aabb_plane_item_t qt_meta_stringdata_Scene_aabb_plane_item = {
+    {
+QT_MOC_LITERAL(0, 0, 21) // "Scene_aabb_plane_item"
+
+    },
+    "Scene_aabb_plane_item"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_Scene_aabb_plane_item[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void Scene_aabb_plane_item::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject Scene_aabb_plane_item::staticMetaObject = {
+    { &Scene_plane_item::staticMetaObject, qt_meta_stringdata_Scene_aabb_plane_item.data,
+      qt_meta_data_Scene_aabb_plane_item,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *Scene_aabb_plane_item::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *Scene_aabb_plane_item::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_Scene_aabb_plane_item.stringdata0))
+        return static_cast<void*>(this);
+    return Scene_plane_item::qt_metacast(_clname);
+}
+
+int Scene_aabb_plane_item::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = Scene_plane_item::qt_metacall(_c, _id, _a);
+    return _id;
+}
+struct qt_meta_stringdata_Polyhedron_demo_cut_plugin_t {
+    QByteArrayData data[18];
+    char stringdata0[230];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_Polyhedron_demo_cut_plugin_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_Polyhedron_demo_cut_plugin_t qt_meta_stringdata_Polyhedron_demo_cut_plugin = {
+    {
+QT_MOC_LITERAL(0, 0, 26), // "Polyhedron_demo_cut_plugin"
+QT_MOC_LITERAL(1, 27, 14), // "updateCutPlane"
+QT_MOC_LITERAL(2, 42, 0), // ""
+QT_MOC_LITERAL(3, 43, 3), // "cut"
+QT_MOC_LITERAL(4, 47, 19), // "computeIntersection"
+QT_MOC_LITERAL(5, 67, 11), // "reset_edges"
+QT_MOC_LITERAL(6, 79, 12), // "Intersection"
+QT_MOC_LITERAL(7, 92, 12), // "SignedFacets"
+QT_MOC_LITERAL(8, 105, 14), // "UnsignedFacets"
+QT_MOC_LITERAL(9, 120, 13), // "UnsignedEdges"
+QT_MOC_LITERAL(10, 134, 10), // "resetPlane"
+QT_MOC_LITERAL(11, 145, 14), // "uncheckActions"
+QT_MOC_LITERAL(12, 160, 10), // "deleteTree"
+QT_MOC_LITERAL(13, 171, 11), // "deleteTrees"
+QT_MOC_LITERAL(14, 183, 24), // "CGAL::Three::Scene_item*"
+QT_MOC_LITERAL(15, 208, 6), // "sender"
+QT_MOC_LITERAL(16, 215, 11), // "updateTrees"
+QT_MOC_LITERAL(17, 227, 2) // "id"
+
+    },
+    "Polyhedron_demo_cut_plugin\0updateCutPlane\0"
+    "\0cut\0computeIntersection\0reset_edges\0"
+    "Intersection\0SignedFacets\0UnsignedFacets\0"
+    "UnsignedEdges\0resetPlane\0uncheckActions\0"
+    "deleteTree\0deleteTrees\0CGAL::Three::Scene_item*\0"
+    "sender\0updateTrees\0id"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_Polyhedron_demo_cut_plugin[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+      13,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,   79,    2, 0x0a /* Public */,
+       3,    0,   80,    2, 0x0a /* Public */,
+       4,    0,   81,    2, 0x0a /* Public */,
+       5,    0,   82,    2, 0x0a /* Public */,
+       6,    0,   83,    2, 0x0a /* Public */,
+       7,    0,   84,    2, 0x0a /* Public */,
+       8,    0,   85,    2, 0x0a /* Public */,
+       9,    0,   86,    2, 0x0a /* Public */,
+      10,    0,   87,    2, 0x0a /* Public */,
+      11,    0,   88,    2, 0x0a /* Public */,
+      12,    0,   89,    2, 0x0a /* Public */,
+      13,    1,   90,    2, 0x0a /* Public */,
+      16,    1,   93,    2, 0x0a /* Public */,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 14,   15,
+    QMetaType::Void, QMetaType::Int,   17,
+
+       0        // eod
+};
+
+void Polyhedron_demo_cut_plugin::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Polyhedron_demo_cut_plugin *_t = static_cast<Polyhedron_demo_cut_plugin *>(_o);
+        Q_UNUSED(_t)
+        switch (_id) {
+        case 0: _t->updateCutPlane(); break;
+        case 1: _t->cut(); break;
+        case 2: _t->computeIntersection(); break;
+        case 3: _t->reset_edges(); break;
+        case 4: _t->Intersection(); break;
+        case 5: _t->SignedFacets(); break;
+        case 6: _t->UnsignedFacets(); break;
+        case 7: _t->UnsignedEdges(); break;
+        case 8: _t->resetPlane(); break;
+        case 9: _t->uncheckActions(); break;
+        case 10: _t->deleteTree(); break;
+        case 11: _t->deleteTrees((*reinterpret_cast< CGAL::Three::Scene_item*(*)>(_a[1]))); break;
+        case 12: _t->updateTrees((*reinterpret_cast< int(*)>(_a[1]))); break;
+        default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 11:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< CGAL::Three::Scene_item* >(); break;
+            }
+            break;
+        }
+    }
+}
+
+const QMetaObject Polyhedron_demo_cut_plugin::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_Polyhedron_demo_cut_plugin.data,
+      qt_meta_data_Polyhedron_demo_cut_plugin,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *Polyhedron_demo_cut_plugin::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *Polyhedron_demo_cut_plugin::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_Polyhedron_demo_cut_plugin.stringdata0))
+        return static_cast<void*>(this);
+    if (!strcmp(_clname, "Polyhedron_demo_plugin_interface"))
+        return static_cast< Polyhedron_demo_plugin_interface*>(this);
+    if (!strcmp(_clname, "Polyhedron_demo_io_plugin_interface"))
+        return static_cast< Polyhedron_demo_io_plugin_interface*>(this);
+    if (!strcmp(_clname, "com.geometryfactory.PolyhedronDemo.PluginInterface/1.0"))
+        return static_cast< CGAL::Three::Polyhedron_demo_plugin_interface*>(this);
+    if (!strcmp(_clname, "com.geometryfactory.PolyhedronDemo.IOPluginInterface/1.90"))
+        return static_cast< CGAL::Three::Polyhedron_demo_io_plugin_interface*>(this);
+    return QObject::qt_metacast(_clname);
+}
+
+int Polyhedron_demo_cut_plugin::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 13)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 13;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 13)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 13;
+    }
+    return _id;
+}
+
+QT_PLUGIN_METADATA_SECTION const uint qt_section_alignment_dummy = 42;
+
+#ifdef QT_NO_DEBUG
+
+QT_PLUGIN_METADATA_SECTION
+static const unsigned char qt_pluginMetaData[] = {
+    'Q', 'T', 'M', 'E', 'T', 'A', 'D', 'A', 'T', 'A', ' ', ' ',
+    'q',  'b',  'j',  's',  0x01, 0x00, 0x00, 0x00,
+    0xcc, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    0xb8, 0x00, 0x00, 0x00, 0x1b, 0x03, 0x00, 0x00,
+    0x03, 0x00, 'I',  'I',  'D',  0x00, 0x00, 0x00,
+    '9',  0x00, 'c',  'o',  'm',  '.',  'g',  'e', 
+    'o',  'm',  'e',  't',  'r',  'y',  'f',  'a', 
+    'c',  't',  'o',  'r',  'y',  '.',  'P',  'o', 
+    'l',  'y',  'h',  'e',  'd',  'r',  'o',  'n', 
+    'D',  'e',  'm',  'o',  '.',  'I',  'O',  'P', 
+    'l',  'u',  'g',  'i',  'n',  'I',  'n',  't', 
+    'e',  'r',  'f',  'a',  'c',  'e',  '/',  '1', 
+    '.',  '9',  '0',  0x00, 0x9b, 0x0c, 0x00, 0x00,
+    0x09, 0x00, 'c',  'l',  'a',  's',  's',  'N', 
+    'a',  'm',  'e',  0x00, 0x1a, 0x00, 'P',  'o', 
+    'l',  'y',  'h',  'e',  'd',  'r',  'o',  'n', 
+    '_',  'd',  'e',  'm',  'o',  '_',  'c',  'u', 
+    't',  '_',  'p',  'l',  'u',  'g',  'i',  'n', 
+    ':',  '!',  0xa1, 0x00, 0x07, 0x00, 'v',  'e', 
+    'r',  's',  'i',  'o',  'n',  0x00, 0x00, 0x00,
+    0x11, 0x00, 0x00, 0x00, 0x05, 0x00, 'd',  'e', 
+    'b',  'u',  'g',  0x00, 0x95, 0x15, 0x00, 0x00,
+    0x08, 0x00, 'M',  'e',  't',  'a',  'D',  'a', 
+    't',  'a',  0x00, 0x00, 0x0c, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0c, 0x00, 0x00, 0x00, 0x9c, 0x00, 0x00, 0x00,
+    'T',  0x00, 0x00, 0x00, 0x90, 0x00, 0x00, 0x00,
+    0x80, 0x00, 0x00, 0x00
+};
+
+#else // QT_NO_DEBUG
+
+QT_PLUGIN_METADATA_SECTION
+static const unsigned char qt_pluginMetaData[] = {
+    'Q', 'T', 'M', 'E', 'T', 'A', 'D', 'A', 'T', 'A', ' ', ' ',
+    'q',  'b',  'j',  's',  0x01, 0x00, 0x00, 0x00,
+    0xcc, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    0xb8, 0x00, 0x00, 0x00, 0x1b, 0x03, 0x00, 0x00,
+    0x03, 0x00, 'I',  'I',  'D',  0x00, 0x00, 0x00,
+    '9',  0x00, 'c',  'o',  'm',  '.',  'g',  'e', 
+    'o',  'm',  'e',  't',  'r',  'y',  'f',  'a', 
+    'c',  't',  'o',  'r',  'y',  '.',  'P',  'o', 
+    'l',  'y',  'h',  'e',  'd',  'r',  'o',  'n', 
+    'D',  'e',  'm',  'o',  '.',  'I',  'O',  'P', 
+    'l',  'u',  'g',  'i',  'n',  'I',  'n',  't', 
+    'e',  'r',  'f',  'a',  'c',  'e',  '/',  '1', 
+    '.',  '9',  '0',  0x00, 0x95, 0x0c, 0x00, 0x00,
+    0x08, 0x00, 'M',  'e',  't',  'a',  'D',  'a', 
+    't',  'a',  0x00, 0x00, 0x0c, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1b, 0x10, 0x00, 0x00, 0x09, 0x00, 'c',  'l', 
+    'a',  's',  's',  'N',  'a',  'm',  'e',  0x00,
+    0x1a, 0x00, 'P',  'o',  'l',  'y',  'h',  'e', 
+    'd',  'r',  'o',  'n',  '_',  'd',  'e',  'm', 
+    'o',  '_',  'c',  'u',  't',  '_',  'p',  'l', 
+    'u',  'g',  'i',  'n',  '1',  0x00, 0x00, 0x00,
+    0x05, 0x00, 'd',  'e',  'b',  'u',  'g',  0x00,
+    ':',  '!',  0xa1, 0x00, 0x07, 0x00, 'v',  'e', 
+    'r',  's',  'i',  'o',  'n',  0x00, 0x00, 0x00,
+    0x0c, 0x00, 0x00, 0x00, 'T',  0x00, 0x00, 0x00,
+    'p',  0x00, 0x00, 0x00, 0x9c, 0x00, 0x00, 0x00,
+    0xa8, 0x00, 0x00, 0x00
+};
+#endif // QT_NO_DEBUG
+
+QT_MOC_EXPORT_PLUGIN(Polyhedron_demo_cut_plugin, Polyhedron_demo_cut_plugin)
+
+QT_WARNING_POP
+QT_END_MOC_NAMESPACE
