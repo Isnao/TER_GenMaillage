@@ -1,7 +1,0 @@
-set(CGAL_POLYHEDRON_DEMO_CMAKE_MODULE_PATH "D:/CGAL/demo/Polyhedron;D:/CGAL/demo/Polyhedron/out/build/x64-Debug")
-set(CGAL_POLYHEDRON_DEMO_DEFINITIONS "")
-set(CGAL_POLYHEDRON_DEMO_HEADERS_DIRS "D:/CGAL/demo/Polyhedron;D:/CGAL/demo/Polyhedron/include;D:/CGAL/demo/Polyhedron/CGAL_demo")
-set(CGAL_POLYHEDRON_DEMO_DIR "D:/CGAL/demo/Polyhedron/out/build/x64-Debug")
-set(CGAL_POLYHEDRON_DEMO_PLUGINS_DIR "")
-set(CGAL_POLYHEDRON_DEMO_USE_FILE "D:/CGAL/demo/Polyhedron/UseCGAL_polyhedron_demo.cmake")
-set(CGAL_polyhedron_demoFOUND TRUE)
