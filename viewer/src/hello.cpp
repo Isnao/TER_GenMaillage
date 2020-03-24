@@ -91,56 +91,32 @@ Mesh read_from(std::string filename)
 int main(int argc, char* argv[])
 {
 	std::string filename;
+	bool nofill, onlyedges;
+	int dim;
 
-	if(argc < 2)
+	if(argc < 5)
 	{
-		std::cerr << "Usage : " << argv[0] << " <MESH_FILE.(PLY|OFF)>\n";
-		std::cerr << "Default MESH_FILE is set to ../data/hello-world.ply\n";
-		filename = "../data/hello-world.ply";
+		std::cerr << "Usage : " << argv[0] << " <MESH_FILE.(PLY|OFF)> <No_fill (0|1)> <Only_Edges (0|1)> <Dim of vertex [0-3]>\n";
+		std::cerr << "Default MESH_FILE is set to ../data/Patrickc3t3\n";
+		filename = "../data/Patrickc3t3";
+		nofill = false;
+		onlyedges = false;
+		dim = 3;
 	}
 	else
 	{
 		filename = argv[1];
+		nofill = argv[2];
+		onlyedges = argv[3];
+		dim = argv[4];
 	}
-
-	/*std::cerr << "Reading mesh from (" << filename << ")...\n";
-	Mesh mesh = read_from(filename);
-
-	CGAL::draw(mesh,"test",true);*/
 	
-	std::cerr << "Create C3T3\n";
+	C3t3 c3t3;
 	
-	Image image;   
-	//image.read("../data/Patrick8.inr");       // Loads image
-	image.read("../data/420.inr");
-
-	// Domain
-	Mesh_domain domain = Mesh_domain::create_labeled_image_mesh_domain(image);
-
-	// Mesh criteria
-	Mesh_criteria criteria(edge_size=6,
-						   facet_angle=30, facet_size=6, facet_distance=4,
-                           cell_radius_edge_ratio=3, cell_size=8);
- 
-
-	// Meshing
-    C3t3 c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria);	
+	std::ifstream c3t3_load(filename); //lecture du fichier pour passage dans c3t3
+	c3t3_load >> c3t3;
 	
-	/*C3t3 c3t3;
-	
-	std::ifstream c3t3_load("../data/Patrickmesh.mesh");
-	c3t3_load >> c3t3.triangulation();
-	
-	C3t3::Edges_in_complex_iterator it = c3t3.edges_in_complex_begin();
-	
-	std::cerr << "Un point : " << c3t3.in_dimension(it->first->vertex(it->second));*/
-	
-    /*C3t3::Edges_in_complex_iterator t = c3t3.edges_in_complex_begin();
-	
-	std::cerr << "point :" << t->first->vertex(t->second)->point() << std::endl;
-	std::cerr << "point :" << t->first->vertex(t->third)->point() << std::endl;*/
-	
-	CGAL::draw(c3t3,"Test affichage edges",false,false,2);
+	CGAL::draw(c3t3,"Test affichage edges",nofill,onlyedges,dim);
 
 	return EXIT_SUCCESS;
 }

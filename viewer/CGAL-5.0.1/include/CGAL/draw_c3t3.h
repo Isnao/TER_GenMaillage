@@ -111,10 +111,10 @@ protected:
     { 
 	    if (!m_nofaces)
 			compute_face(it); 
-		/*compute_vertex(it->first->vertex(0));
+		compute_vertex(it->first->vertex(0));		//Utile pour afficher les edges, à retirer une fois les edges in complex rempli
 		compute_vertex(it->first->vertex(1));
 		compute_vertex(it->first->vertex(2));
-		compute_vertex(it->first->vertex(3));*/
+		compute_vertex(it->first->vertex(3));
 	}   
 	  
     for (Edge_handle it=c3t3.edges_in_complex_begin();
@@ -125,7 +125,7 @@ protected:
 			compute_edge(it);
 	} else compute_edge(it);}
 	
-    /*for (Vertex_handle it=c3t3.vertices_in_complex_begin();
+    /*for (Vertex_handle it=c3t3.vertices_in_complex_begin();		//Cette zone sera utile une fois les edges in complex rempli
          it!=c3t3.vertices_in_complex_end(); ++it)
     { if (it->in_dimension() <= m_maxdim)
 		compute_vertex(it); 
