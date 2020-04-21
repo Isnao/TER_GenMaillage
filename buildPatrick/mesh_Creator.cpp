@@ -184,6 +184,45 @@ void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, 
     curveNum++;
 }
 
+float distance3(Point_3 a, Point_3 b)
+{
+    float c = std::sqrt(((a.x() - b.x()) * (a.x() - b.x())) + ((a.y() - b.y()) * (a.y() - b.y())) + ((a.z() - b.z()) * (a.z() - b.z())));
+    return c;
+}
+
+//recupere le point le plus proche dans les polylignes
+//p0 -> c1
+//polylignes -> c2
+C3t3::Vertex_handle findPoint(C3t3 &c1, C3t3::Vertex_handle p0,  C3t3 &c2, std::vector<std::vector<C3t3::Edge>> polylignes){
+    C3t3::Vertex_handle tmp = nullptr;
+    float min = 9999.9f;//ou infinity
+    int dimP0 = c1.in_dimension(p0);
+    for(std::vector<C3t3::Edge> poly: polylignes){//on parcours toute les poly
+        for(C3t3::Edge px : poly){//tout les edges de la poly
+            float t = distance3(p0->point(),px.first->vertex(px.second)->point());//distance p0 et un des point de l'edge
+            float v = distance3(p0->point(),px.first->vertex(px.third)->point());
+            if(v<t && c2.in_dimension(px.first->vertex(px.second)) == dimP0){t = v;}//si le second point est plus proche
+            if(min > t && c2.in_dimension(px.first->vertex(px.third)) == dimP0){min = t; tmp = px.first->vertex(px.second);}
+        }
+    }
+    return tmp;
+}
+
+void getDomPoly(C3t3& c3t3, int dom, std::vector<std::vector<C3t3::Edge>>& PolyLines, std::vector<int>& res) {
+    Tr& t = c3t3.triangulation();
+    for (int i = 0; i < PolyLines.size(); i++) {
+        Tr::Cell_circulator c = t.incident_cells(PolyLines[i][0]);
+        Tr::Cell_circulator done = c;
+        do {
+            if ((int)(c->subdomain_index()) == dom) {
+                res.push_back(c3t3.curve_segment_index(PolyLines[i][0]));
+                break;
+            }
+            c++;
+        } while (c != done);
+    }
+}
+
 int main(int argc, char** argv)
 {
   
