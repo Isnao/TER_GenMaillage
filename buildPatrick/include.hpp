@@ -111,7 +111,7 @@ std::vector<C3t3::Vertex_handle> findPoint(std::vector<C3t3::Edge> &poly1, std::
     {
         dimP0 = c1.in_dimension(px1.first->vertex(px1.third));
         tmp = nullptr;
-        min = 9999.9f;
+        min = FLT_MAX;
         for (std::vector<C3t3::Edge> poly : polylignes)
         { //on parcours toute les poly
             for (C3t3::Edge px : poly)
