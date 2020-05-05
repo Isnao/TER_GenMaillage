@@ -33,16 +33,19 @@ protected:
     virtual void init();
     virtual QString helpString() const;
 
-    void openMesh(const QString &filename);
-
     void glFacet( const Facet & facet );
 
+    void drawSD();
     void drawBoundaries();
     void drawVertices();
     void drawEdges();
     void drawPolyline();
 
     C3t3 m_c3t3;
+    std::vector<C3t3> c3t3_list;
+
+    std::vector<std::vector<C3t3::Edge>> polyLines;
+    std::vector<std::vector<std::vector<C3t3::Edge>>> polyLines_list;
 
     int m_indices[4][3];
 
@@ -52,16 +55,28 @@ protected:
 
     std::map<Subdomain_index, QColor> m_subdomain_colors;
 
+    std::vector<std::set<Subdomain_index>> subdomain_indices_list;
+    std::vector<std::set<Surface_index>> surface_indices_list;
+    std::vector<int> nb_curve_segments_list;
+
+    std::vector<std::map<Subdomain_index, QColor>> subdomain_colors_list;
+
     qglviewer::Vec m_center;
 
-    bool E, V, F, P;
-    std::vector<std::vector<C3t3::Edge>> polyLines;
-    int indexP;
+    bool E, V, F, P, SD;
+    int indexP, indexSP, indexSD;
+
+public:
+    int getMaxC3t3();
+    void openMesh(const QString &filename);
 
 public slots:
     void onlyEdges();
     void onlyVertices();
     void onlyFaces();
-    void activePolyline(bool a, int i);
-    void updateIndexPoly(int i);
+    void activePolyline(bool a, int i, int j);
+    void updateIndexPoly(int i, int j);
+    void updateC3t3(int i);
+    int selectSubdomain(int i);
+    void activeSubdomain(bool a, int i);
 };

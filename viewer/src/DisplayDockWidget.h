@@ -22,6 +22,10 @@ public:
     QCheckBox *CurvesActive;
     QSpinBox *EdgesPolyligne;
     bool isCurveActive = false;
+    QPushButton *addMaillage;
+    QSpinBox *maillageNumber;
+    QCheckBox *activeSubdomain;
+    QSpinBox *subdomain;
 };
 
 #endif // DISPLAYDOCKWIDGET_H

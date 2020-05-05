@@ -198,6 +198,33 @@ void Viewer::drawBoundaries(){
     glEnd();
 }
 
+void Viewer::drawSD(){
+
+    glEnable(GL_LIGHTING);
+    glBegin(GL_TRIANGLES);
+
+    /*for (auto it = m_surface_indices.begin(); it != m_surface_indices.end(); ++it){
+        Surface_index surface_index = *it;
+        QColor color = m_subdomain_colors[it->second];
+        glColor4f(color.redF(), color.greenF(), color.blueF(), 1.);*/
+
+        for (C3t3::Facets_in_complex_iterator fit = m_c3t3.facets_in_complex_begin() ; fit != m_c3t3.facets_in_complex_end (); ++fit ) {
+
+            Facet facet = *fit;
+            int k = m_c3t3.subdomain_index(facet.first);
+            if (k == indexSD or m_c3t3.subdomain_index(m_c3t3.triangulation().mirror_facet(facet).first) == indexSD) {
+                glColor4f(k, k, k, 1.);
+                if(k  == 0 )
+                    facet = m_c3t3.triangulation().mirror_facet(facet);
+
+                glFacet(facet);
+            }
+
+        }
+    //}
+    glEnd();
+}
+
 void Viewer::drawEdges(){
 
     glDisable(GL_LIGHTING);
@@ -298,6 +325,8 @@ void Viewer::draw() {
         drawBoundaries();
     if (P)
         drawPolyline();
+    if (SD)
+        drawSD();
 
     /*glPushMatrix();
     glMultMatrixd(manipulatedFrame()->matrix());
@@ -327,7 +356,10 @@ void Viewer::init() {
     V = false;
     F = true;
     P = false;
+    SD = false;
     indexP = 0;
+    indexSP = 0;
+    indexSD = 0;
 
     m_indices[0][0] = 3; m_indices[0][2] = 1; m_indices[0][1] = 2;
     m_indices[1][0] = 3; m_indices[1][2] = 2; m_indices[1][1] = 0;
@@ -344,27 +376,11 @@ void Viewer::init() {
     setManipulatedFrame(new ManipulatedFrame());
 
     this->openMesh("data/out.mesh");
+    m_c3t3 = c3t3_list[0];
 
-
-    for (C3t3::Cells_in_complex_iterator cit = m_c3t3.cells_in_complex_begin () ; cit != m_c3t3.cells_in_complex_end (); ++cit ) {
-
-        m_subdomain_indices.insert(m_c3t3.subdomain_index(cit));
-
-    }
-
-    for (C3t3::Facets_in_complex_iterator fit = m_c3t3.facets_in_complex_begin () ; fit != m_c3t3.facets_in_complex_end (); ++fit ) {
-
-        m_surface_indices.insert(m_c3t3.surface_index(*fit));
-
-    }
-
-    int nb = 0;
-    for (auto it = m_subdomain_indices.begin(); it != m_subdomain_indices.end(); ++it){
-        QColor color;
-        color.setHsvF(0.05 + 0.9*double(nb++)/double(m_subdomain_indices.size()), 0.6 ,1. );
-        m_subdomain_colors[*it] = color;
-        std::cout << *it<< std::endl;
-    }
+    m_subdomain_indices = subdomain_indices_list.at(0);
+    m_surface_indices = surface_indices_list.at(0);
+    m_subdomain_colors = subdomain_colors_list.at(0);
 
 
     CGAL::Bbox_3 bbox = m_c3t3.bbox();
@@ -382,11 +398,12 @@ void Viewer::init() {
 void Viewer::openMesh(const QString &filename){
 
     std::ifstream c3t3_load(filename.toStdString());
-    c3t3_load >> m_c3t3;
+    C3t3 t;
+    c3t3_load >> t;
 
     // remplissage des dimensions c3t3 + remplissages des egdes caracteristiques
       std::vector<C3t3::Edge> CaracEdge;
-      c3t3Param(m_c3t3,CaracEdge);
+      c3t3Param(t,CaracEdge);
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -399,12 +416,12 @@ void Viewer::openMesh(const QString &filename){
 
       // vertex ***************************
 
-      std::cout << "C3T3 Number of cells : " << m_c3t3.number_of_cells() << std::endl;
+      std::cout << "C3T3 Number of cells : " << t.number_of_cells() << std::endl;
       int i = 0;
       std::map<C3t3::Vertex_handle, int> V;
-      for (Complex_Vertex_Iterator it = m_c3t3.vertices_in_complex_begin(); it != m_c3t3.vertices_in_complex_end(); ++it)
+      for (Complex_Vertex_Iterator it = t.vertices_in_complex_begin(); it != t.vertices_in_complex_end(); ++it)
       {
-        if (m_c3t3.in_dimension(it) == 0)
+        if (t.in_dimension(it) == 0)
         {
           V[it] = i;
           //std::cout << "Vertex #" << i << " : " << it->point() << " Dimension : " << c3t3.in_dimension(it) << std::endl;
@@ -418,7 +435,7 @@ void Viewer::openMesh(const QString &filename){
 
       i = 0;
       std::map<C3t3::Edge, int> V_e;
-      for (C3t3::Edges_in_complex_iterator it = m_c3t3.edges_in_complex_begin(); it != m_c3t3.edges_in_complex_end(); ++it)
+      for (C3t3::Edges_in_complex_iterator it = t.edges_in_complex_begin(); it != t.edges_in_complex_end(); ++it)
       {
         // add the current Point_3 to the map with its current index
         C3t3::Edge edge = *it;
@@ -432,6 +449,7 @@ void Viewer::openMesh(const QString &filename){
 
       //polylignes
 
+      std::cerr << "deb poly" << std::endl;
         //c3t3
         int curveNum_c3t3=1;
       std::vector<bool> used;
@@ -442,11 +460,42 @@ void Viewer::openMesh(const QString &filename){
       for (unsigned int i = 0; i < CaracEdge.size(); i++){
         if(used[i]==false){
           std::vector<C3t3::Edge> tempPolyLine;
-          parcoursPoly(tempPolyLine, used, CaracEdge, i, m_c3t3,curveNum_c3t3);
+          parcoursPoly(tempPolyLine, used, CaracEdge, i, t,curveNum_c3t3);
           polyLines.push_back(tempPolyLine);
           curveNum_c3t3++;
        }
       }
+      std::cerr << "fin poly" << std::endl;
+
+      std::set<Subdomain_index> sdi;
+      std::set<Surface_index> sfi;
+      std::map<Subdomain_index, QColor> sdc;
+
+      for (C3t3::Cells_in_complex_iterator cit = t.cells_in_complex_begin () ; cit != t.cells_in_complex_end (); ++cit ) {
+
+          sdi.insert(t.subdomain_index(cit));
+
+      }
+
+      for (C3t3::Facets_in_complex_iterator fit = t.facets_in_complex_begin () ; fit != t.facets_in_complex_end (); ++fit ) {
+
+          sfi.insert(t.surface_index(*fit));
+
+      }
+
+      int nb = 0;
+      for (auto it = sdi.begin(); it != sdi.end(); ++it){
+          QColor color;
+          color.setHsvF(0.05 + 0.9*double(nb++)/double(sdi.size()), 0.6 ,1. );
+          sdc[*it] = color;
+          std::cout << *it<< std::endl;
+      }
+
+      c3t3_list.push_back(t);
+      polyLines_list.push_back(polyLines);
+      subdomain_indices_list.push_back(sdi);
+      surface_indices_list.push_back(sfi);
+      subdomain_colors_list.push_back(sdc);
 
 }
 
@@ -493,9 +542,10 @@ std::cerr << "onlyFaces()" << std::endl;
     update();
 }
 
-void Viewer::activePolyline(bool a, int i) {
+void Viewer::activePolyline(bool a, int i, int j) {
     P = a;
     indexP = i;
+    indexSP = j;
     if (P) {
         F = false;
         V = false;
@@ -509,8 +559,55 @@ void Viewer::activePolyline(bool a, int i) {
     update();
 }
 
-void Viewer::updateIndexPoly(int i) {
+void Viewer::updateIndexPoly(int i, int j) {
     indexP = i;
+    indexSP = j;
     if (P)
         update();
+}
+
+void Viewer::updateC3t3(int i) {
+
+    if (i < (int)c3t3_list.size()) {
+        m_c3t3 = c3t3_list.at(i);
+        polyLines = polyLines_list.at(i);
+        m_subdomain_indices = subdomain_indices_list.at(i);
+        m_surface_indices = surface_indices_list.at(i);
+        m_subdomain_colors = subdomain_colors_list.at(i);
+    } else
+        std::cerr << "Error : int not in range" << std::endl;
+
+}
+
+int Viewer::getMaxC3t3() {
+
+    return (int)c3t3_list.size();
+
+}
+
+int Viewer::selectSubdomain(int i) {
+
+    indexSD = i;
+    update();
+    return m_subdomain_indices.size();
+
+}
+
+void Viewer::activeSubdomain(bool a, int i) {
+
+    SD = a;
+    indexSD = i;
+    if (SD) {
+        V = false;
+        E = false;
+        F = false;
+        P = false;
+    } else {
+        V = false;
+        E = false;
+        P = false;
+        F = true;
+    }
+    std::cerr << "activeSubdomain(bool)" << std::endl;
+    update();
 }
