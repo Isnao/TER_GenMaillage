@@ -13,7 +13,8 @@ class Window : public QMainWindow
 
   private:
         DisplayDockWidget *m_displayDockWidget;
-        Viewer * m_viewer;
+        Viewer * m_viewer1;
+        Viewer * m_viewer2;
 };
 
 #endif // WINDOW_H

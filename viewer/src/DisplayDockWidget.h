@@ -12,8 +12,9 @@ class DisplayDockWidget : public QDockWidget
 {
        Q_OBJECT
 public:
-    DisplayDockWidget(Viewer * viewer, QWidget * parent );
-    Viewer * m_viewer;
+    DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget * parent );
+    Viewer * m_viewer1;
+    Viewer * m_viewer2;
 
     QPushButton *Edges;
     QPushButton *Faces;
@@ -23,9 +24,20 @@ public:
     QSpinBox *EdgesPolyligne;
     bool isCurveActive = false;
     QPushButton *addMaillage;
-    QSpinBox *maillageNumber;
+    QSpinBox *maillageNumber1;
+    QSpinBox *maillageNumber2;
     QCheckBox *activeSubdomain;
     QSpinBox *subdomain;
+
+protected:
+    std::vector<C3t3> c3t3_list;
+    std::vector<std::vector<std::vector<C3t3::Edge>>> polyLines_list;
+    std::vector<std::set<Subdomain_index>> subdomain_indices_list;
+    std::vector<std::set<Surface_index>> surface_indices_list;
+    std::vector<std::map<Subdomain_index, QColor>> subdomain_colors_list;
+
+    void openMesh(const QString &filename);
+    void updateMaillage(int i, Viewer * v);
 };
 
 #endif // DISPLAYDOCKWIDGET_H

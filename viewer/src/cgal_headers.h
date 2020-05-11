@@ -45,5 +45,4 @@ typedef C3t3::Corner_index Corner_index;
 typedef C3t3::Curve_segment_index Curve_segment_index;
 typedef C3t3::Point Point_3;
 
-
 #endif // CGAL_HEADERS_H

@@ -42,10 +42,9 @@ protected:
     void drawPolyline();
 
     C3t3 m_c3t3;
-    std::vector<C3t3> c3t3_list;
 
     std::vector<std::vector<C3t3::Edge>> polyLines;
-    std::vector<std::vector<std::vector<C3t3::Edge>>> polyLines_list;
+    std::vector<std::vector<std::vector<C3t3::Edge>>> groupPolyLines;
 
     int m_indices[4][3];
 
@@ -55,20 +54,12 @@ protected:
 
     std::map<Subdomain_index, QColor> m_subdomain_colors;
 
-    std::vector<std::set<Subdomain_index>> subdomain_indices_list;
-    std::vector<std::set<Surface_index>> surface_indices_list;
     std::vector<int> nb_curve_segments_list;
-
-    std::vector<std::map<Subdomain_index, QColor>> subdomain_colors_list;
 
     qglviewer::Vec m_center;
 
     bool E, V, F, P, SD;
     int indexP, indexSP, indexSD;
-
-public:
-    int getMaxC3t3();
-    void openMesh(const QString &filename);
 
 public slots:
     void onlyEdges();
@@ -76,7 +67,7 @@ public slots:
     void onlyFaces();
     void activePolyline(bool a, int i, int j);
     void updateIndexPoly(int i, int j);
-    void updateC3t3(int i);
+    void updateC3t3(C3t3 c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc);
     int selectSubdomain(int i);
     void activeSubdomain(bool a, int i);
 };

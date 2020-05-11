@@ -26,133 +26,6 @@
 #include <iostream>
 #include <cfloat>
 
-// To avoid verbose function and named parameters call
-using namespace CGAL::parameters;
-
-// edgeInVector :
-bool edgeInVector(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
-{
-    for (unsigned int i = 0; i < tab.size(); i++)
-    {
-        if ((edge.first->vertex(edge.second) == tab[i].first->vertex(tab[i].second) && edge.first->vertex(edge.third) == tab[i].first->vertex(tab[i].third)) || (edge.first->vertex(edge.second) == tab[i].first->vertex(tab[i].third) && edge.first->vertex(edge.third) == tab[i].first->vertex(tab[i].second)))
-            return true;
-    }
-    return false;
-}
-// Fin edgeInVector
-
-// c3t3Param :
-void c3t3Param(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
-{
-    Tr &t = c3t3.triangulation();
-    int c3t3CornerIndex = 0;
-    for (Tr::All_vertices_iterator it = t.all_vertices_begin(); it != t.all_vertices_end(); ++it)
-    {
-        int nb = 0;
-        std::vector<Tr::Cell_handle> cells;
-        t.incident_cells(it, std::back_inserter(cells));
-        for (unsigned int i = 0; i < cells.size(); i++)
-        {
-            bool flag = true;
-            for (unsigned int j = 0; j < i; j++)
-            {
-                if ((int)(cells[i]->subdomain_index()) == (int)(cells[j]->subdomain_index()))
-                {
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag)
-            {
-                nb++;
-            }
-        }
-        if (nb == 1)
-        {
-            c3t3.set_dimension(it, 3);
-        }
-        if (nb == 2)
-        {
-            c3t3.set_dimension(it, 2);
-        }
-        if (nb > 2)
-        {
-            c3t3.set_dimension(it, 1);
-        }
-    }
-    for (Tr::All_vertices_iterator it = t.all_vertices_begin(); it != t.all_vertices_end(); ++it)
-    {
-        if (c3t3.in_dimension(it) == 1 || c3t3.in_dimension(it) == 0)
-        {
-            int nb_edges = 0;
-            std::vector<C3t3::Edge> edges;
-            t.incident_edges(it, std::back_inserter(edges));
-            for (unsigned int i = 0; i < edges.size(); i++)
-            {
-                if ((c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 1 || c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 0) && (c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 0 || c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 1))
-                {
-                    if (edgeInVector(edges[i], CaracEdge))
-                    {
-                        nb_edges++;
-                    }
-                    else
-                    {
-                        Tr::Cell_circulator c = t.incident_cells(edges[i]);
-                        Tr::Cell_circulator done = c;
-                        std::vector<int> domains;
-                        do
-                        {
-                            C3t3::Cell_handle cell = c;
-                            int n = (int)(cell->subdomain_index());
-                            if (std::find(domains.begin(), domains.end(), n) == domains.end())
-                            {
-                                domains.push_back(n);
-                            }
-                            c++;
-                        } while (c != done);
-                        if (domains.size() > 2)
-                        {
-                            CaracEdge.push_back(edges[i]);
-                            c3t3.add_to_complex(edges[i], 1);
-                            nb_edges++;
-                        }
-                    }
-                }
-            }
-            if (nb_edges > 2)
-            {
-                c3t3.set_dimension(it, 0);
-                c3t3.add_to_complex(it, c3t3CornerIndex++);
-            }
-        }
-    }
-    std::cout << "carac size of c3t3 : " << CaracEdge.size() << std::endl;
-}
-// Fin c3t3Param
-
-// parcoursPoly :
-void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, C3t3& c3t3, int curveNum) {
-    used[lineNum] = true;
-    polyLine.push_back(V[lineNum]);
-    c3t3.remove_from_complex(V[lineNum]);
-    c3t3.add_to_complex(V[lineNum], curveNum);
-    for (unsigned int i = 0; i < V.size(); i++) {
-        if (used[i] == false) {
-            if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].second)) == 1) {
-                if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].second) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].second)) {
-                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
-                }
-            }
-            if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].third)) == 1) {
-                if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].third) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].third)) {
-                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
-                }
-            }
-        }
-    }
-}
-// Fin parcoursPoly
-
 using namespace std;
 using namespace qglviewer;
 
@@ -207,13 +80,13 @@ void Viewer::drawSD(){
         Surface_index surface_index = *it;
         QColor color = m_subdomain_colors[it->second];
         glColor4f(color.redF(), color.greenF(), color.blueF(), 1.);*/
-
+    QColor color = m_subdomain_colors[indexSD];
+    glColor4f(color.redF(), color.greenF(), color.blueF(), 1.);
         for (C3t3::Facets_in_complex_iterator fit = m_c3t3.facets_in_complex_begin() ; fit != m_c3t3.facets_in_complex_end (); ++fit ) {
 
             Facet facet = *fit;
             int k = m_c3t3.subdomain_index(facet.first);
             if (k == indexSD or m_c3t3.subdomain_index(m_c3t3.triangulation().mirror_facet(facet).first) == indexSD) {
-                glColor4f(k, k, k, 1.);
                 if(k  == 0 )
                     facet = m_c3t3.triangulation().mirror_facet(facet);
 
@@ -264,10 +137,10 @@ void Viewer::drawPolyline(){
     for (C3t3::Edges_in_complex_iterator eit = m_c3t3.edges_in_complex_begin () ; eit != m_c3t3.edges_in_complex_end (); ++eit ) {
 
         for (int i = 0; i < (int)polyLines[indexP].size(); i++) {
-            if (polyLines[indexP][i] == *eit)
+            if (polyLines[indexP][i] == *eit) {
                 glColor4f( 1., 0.8, 0., 1.);
-            else
-                glColor4f( 0.,0.,0., 0.5);
+                break;
+            }
         }
 
         Point_3 from = eit->first->vertex( eit->second )->point();
@@ -375,130 +248,12 @@ void Viewer::init() {
     // The ManipulatedFrame will be used to position the clipping plane
     setManipulatedFrame(new ManipulatedFrame());
 
-    this->openMesh("data/out.mesh");
-    m_c3t3 = c3t3_list[0];
-
-    m_subdomain_indices = subdomain_indices_list.at(0);
-    m_surface_indices = surface_indices_list.at(0);
-    m_subdomain_colors = subdomain_colors_list.at(0);
-
-
-    CGAL::Bbox_3 bbox = m_c3t3.bbox();
-
-    m_center = qglviewer::Vec ((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.);
-    camera()->setSceneCenter(qglviewer::Vec((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.));
-    camera()->setSceneRadius(std::max(std::max(bbox.xmax() - bbox.xmin(), bbox.ymax() - bbox.ymin()), bbox.zmax() - bbox.zmin())*2.);
+    m_center = 0;
 
     camera()->showEntireScene();
     // Enable plane clipping
     //glEnable(GL_CLIP_PLANE0);
 }
-
-
-void Viewer::openMesh(const QString &filename){
-
-    std::ifstream c3t3_load(filename.toStdString());
-    C3t3 t;
-    c3t3_load >> t;
-
-    // remplissage des dimensions c3t3 + remplissages des egdes caracteristiques
-      std::vector<C3t3::Edge> CaracEdge;
-      c3t3Param(t,CaracEdge);
-
-      //////////////////////////////////////////////////////////////////////////////////////////////////////
-      ///////////////////////////////////////////////////////////////////////////////////////////////////
-      ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      std::cout << std::endl;
-
-      //test comparaisons
-      typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr>::Vertices_in_complex_iterator Complex_Vertex_Iterator;
-
-      // vertex ***************************
-
-      std::cout << "C3T3 Number of cells : " << t.number_of_cells() << std::endl;
-      int i = 0;
-      std::map<C3t3::Vertex_handle, int> V;
-      for (Complex_Vertex_Iterator it = t.vertices_in_complex_begin(); it != t.vertices_in_complex_end(); ++it)
-      {
-        if (t.in_dimension(it) == 0)
-        {
-          V[it] = i;
-          //std::cout << "Vertex #" << i << " : " << it->point() << " Dimension : " << c3t3.in_dimension(it) << std::endl;
-        }
-        i++;
-      }
-      std::cout << "Taille V : " << V.size() << " (nombre de vertex de dimension 0 dans c3t3)" << std::endl;
-
-      ///////////////////////////////////////////////
-      // edges ****************************************
-
-      i = 0;
-      std::map<C3t3::Edge, int> V_e;
-      for (C3t3::Edges_in_complex_iterator it = t.edges_in_complex_begin(); it != t.edges_in_complex_end(); ++it)
-      {
-        // add the current Point_3 to the map with its current index
-        C3t3::Edge edge = *it;
-        V_e[edge] = i;
-        ++i;
-      }
-      std::cout << "Taille V_e : " << V_e.size() << "(nombre d'edge caractéristiques dans c3t3)" << std::endl;
-
-      //////////////////////////////////////////////////////////////////////////////////////
-      ////////////////////////////////////////////////////////////////////////////////////
-
-      //polylignes
-
-      std::cerr << "deb poly" << std::endl;
-        //c3t3
-        int curveNum_c3t3=1;
-      std::vector<bool> used;
-      for (unsigned int i = 0; i < CaracEdge.size(); i++){
-        used.push_back(false);
-      }
-
-      for (unsigned int i = 0; i < CaracEdge.size(); i++){
-        if(used[i]==false){
-          std::vector<C3t3::Edge> tempPolyLine;
-          parcoursPoly(tempPolyLine, used, CaracEdge, i, t,curveNum_c3t3);
-          polyLines.push_back(tempPolyLine);
-          curveNum_c3t3++;
-       }
-      }
-      std::cerr << "fin poly" << std::endl;
-
-      std::set<Subdomain_index> sdi;
-      std::set<Surface_index> sfi;
-      std::map<Subdomain_index, QColor> sdc;
-
-      for (C3t3::Cells_in_complex_iterator cit = t.cells_in_complex_begin () ; cit != t.cells_in_complex_end (); ++cit ) {
-
-          sdi.insert(t.subdomain_index(cit));
-
-      }
-
-      for (C3t3::Facets_in_complex_iterator fit = t.facets_in_complex_begin () ; fit != t.facets_in_complex_end (); ++fit ) {
-
-          sfi.insert(t.surface_index(*fit));
-
-      }
-
-      int nb = 0;
-      for (auto it = sdi.begin(); it != sdi.end(); ++it){
-          QColor color;
-          color.setHsvF(0.05 + 0.9*double(nb++)/double(sdi.size()), 0.6 ,1. );
-          sdc[*it] = color;
-          std::cout << *it<< std::endl;
-      }
-
-      c3t3_list.push_back(t);
-      polyLines_list.push_back(polyLines);
-      subdomain_indices_list.push_back(sdi);
-      surface_indices_list.push_back(sfi);
-      subdomain_colors_list.push_back(sdc);
-
-}
-
 
 QString Viewer::helpString() const {
     QString text("<h2>C l i p p i n g P l a n e</h2>");
@@ -566,22 +321,19 @@ void Viewer::updateIndexPoly(int i, int j) {
         update();
 }
 
-void Viewer::updateC3t3(int i) {
+void Viewer::updateC3t3(C3t3 c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc) {
+    m_c3t3 = c;
+    polyLines = p;
+    m_subdomain_indices = sdi;
+    m_surface_indices = sfi;
+    m_subdomain_colors = sdc;
+    CGAL::Bbox_3 bbox = m_c3t3.bbox();
 
-    if (i < (int)c3t3_list.size()) {
-        m_c3t3 = c3t3_list.at(i);
-        polyLines = polyLines_list.at(i);
-        m_subdomain_indices = subdomain_indices_list.at(i);
-        m_surface_indices = surface_indices_list.at(i);
-        m_subdomain_colors = subdomain_colors_list.at(i);
-    } else
-        std::cerr << "Error : int not in range" << std::endl;
+    m_center = qglviewer::Vec ((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.);
+    camera()->setSceneCenter(qglviewer::Vec((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.));
+    camera()->setSceneRadius(std::max(std::max(bbox.xmax() - bbox.xmin(), bbox.ymax() - bbox.ymin()), bbox.zmax() - bbox.zmin())*2.);
 
-}
-
-int Viewer::getMaxC3t3() {
-
-    return (int)c3t3_list.size();
+    update();
 
 }
 
