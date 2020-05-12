@@ -28,6 +28,235 @@
 
 using namespace std;
 using namespace qglviewer;
+using namespace CGAL::parameters;
+
+// edgeInVector :
+bool edgeInVector(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
+{
+    for (unsigned int i = 0; i < tab.size(); i++)
+    {
+        if ((edge.first->vertex(edge.second) == tab[i].first->vertex(tab[i].second) && edge.first->vertex(edge.third) == tab[i].first->vertex(tab[i].third)) || (edge.first->vertex(edge.second) == tab[i].first->vertex(tab[i].third) && edge.first->vertex(edge.third) == tab[i].first->vertex(tab[i].second)))
+            return true;
+    }
+    return false;
+}
+// Fin edgeInVector
+
+// c3t3Param :
+void c3t3Param(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
+{
+    Tr &t = c3t3.triangulation();
+    int c3t3CornerIndex = 0;
+    for (Tr::All_vertices_iterator it = t.all_vertices_begin(); it != t.all_vertices_end(); ++it)
+    {
+        int nb = 0;
+        std::vector<Tr::Cell_handle> cells;
+        t.incident_cells(it, std::back_inserter(cells));
+        for (unsigned int i = 0; i < cells.size(); i++)
+        {
+            bool flag = true;
+            for (unsigned int j = 0; j < i; j++)
+            {
+                if ((int)(cells[i]->subdomain_index()) == (int)(cells[j]->subdomain_index()))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                nb++;
+            }
+        }
+        if (nb == 1)
+        {
+            c3t3.set_dimension(it, 3);
+        }
+        if (nb == 2)
+        {
+            c3t3.set_dimension(it, 2);
+        }
+        if (nb > 2)
+        {
+            c3t3.set_dimension(it, 1);
+        }
+    }
+    for (Tr::All_vertices_iterator it = t.all_vertices_begin(); it != t.all_vertices_end(); ++it)
+    {
+        if (c3t3.in_dimension(it) == 1 || c3t3.in_dimension(it) == 0)
+        {
+            int nb_edges = 0;
+            std::vector<C3t3::Edge> edges;
+            t.incident_edges(it, std::back_inserter(edges));
+            for (unsigned int i = 0; i < edges.size(); i++)
+            {
+                if ((c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 1 || c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 0) && (c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 0 || c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 1))
+                {
+                    if (edgeInVector(edges[i], CaracEdge))
+                    {
+                        nb_edges++;
+                    }
+                    else
+                    {
+                        Tr::Cell_circulator c = t.incident_cells(edges[i]);
+                        Tr::Cell_circulator done = c;
+                        std::vector<int> domains;
+                        do
+                        {
+                            C3t3::Cell_handle cell = c;
+                            int n = (int)(cell->subdomain_index());
+                            if (std::find(domains.begin(), domains.end(), n) == domains.end())
+                            {
+                                domains.push_back(n);
+                            }
+                            c++;
+                        } while (c != done);
+                        if (domains.size() > 2)
+                        {
+                            CaracEdge.push_back(edges[i]);
+                            c3t3.add_to_complex(edges[i], 1);
+                            nb_edges++;
+                        }
+                    }
+                }
+            }
+            if (nb_edges > 2)
+            {
+                c3t3.set_dimension(it, 0);
+                c3t3.add_to_complex(it, c3t3CornerIndex++);
+            }
+        }
+    }
+    std::cout << "carac size of c3t3 : " << CaracEdge.size() << std::endl;
+}
+// Fin c3t3Param
+
+// parcoursPoly :
+void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, C3t3& c3t3, int curveNum) {
+    used[lineNum] = true;
+    polyLine.push_back(V[lineNum]);
+    c3t3.remove_from_complex(V[lineNum]);
+    c3t3.add_to_complex(V[lineNum], curveNum);
+    for (unsigned int i = 0; i < V.size(); i++) {
+        if (used[i] == false) {
+            if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].second)) == 1) {
+                if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].second) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].second)) {
+                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
+                }
+            }
+            if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].third)) == 1) {
+                if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].third) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].third)) {
+                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
+                }
+            }
+        }
+    }
+}
+// Fin parcoursPoly
+
+// groupPolylines
+void getGroupPolyline(C3t3& c3t3,Tr& t,std::vector<std::vector<C3t3::Edge>>& polyLines,std::vector<std::vector<std::vector<C3t3::Edge>>>& res){
+  std::vector<bool> used;
+  for(unsigned int i=0;i<polyLines.size();i++){
+    used.push_back(false);
+  }
+
+  for(unsigned int i=0;i<polyLines.size();i++){
+    if(!used[i]){
+      std::vector<std::vector<C3t3::Edge>> temp;
+      std::vector<int> domains;
+      Tr::Cell_circulator c=t.incident_cells(polyLines[i][0]);
+      Tr::Cell_circulator done=c;
+      do{
+        C3t3::Cell_handle cell=c;
+        int n=(int)(cell->subdomain_index());
+        if(std::find(domains.begin(), domains.end(), n) == domains.end()){
+          domains.push_back(n);
+        }
+        c++;
+      }while(c != done);
+
+      for(unsigned int j=i;j<polyLines.size();j++){
+        if(!used[j]){
+          bool isSame=true;
+          for(unsigned int k=0;k<domains.size();k++){
+            c=t.incident_cells(polyLines[j][0]);
+            bool b=true;
+            done=c;
+            do{
+              C3t3::Cell_handle cell=c;
+              if((int)(cell->subdomain_index())==domains[k]){
+                b=false;
+                break;
+              }
+              c++;
+            }while(c != done);
+            if(b){
+              isSame=false;
+              break;
+            }
+          }
+          if(isSame){
+            temp.push_back(polyLines[i]);
+            used[j]=true;
+          }
+        }
+      }
+
+      res.push_back(temp);
+    }
+  }
+}
+// Fin groupPolyLines
+
+// getSamePolylines
+void getSamePolylines(C3t3 &c3t31, Tr &t, C3t3 &c3t32, Tr &t2, C3t3::Edge e, std::vector<std::vector<C3t3::Edge>> &polyLinesC3t32, std::vector<std::vector<C3t3::Edge>> &polyLines)
+{ //c3t3,tr1,c3t32,tr2,e : one edge of the polyline in c3t3,polylignes of c3t32, the list of found polylines in c3t32 with same domains as v
+    std::vector<int> domains;
+    Tr::Cell_circulator c = t.incident_cells(e);
+    Tr::Cell_circulator done = c;
+    do
+    {
+        C3t3::Cell_handle cell = c;
+        int n = (int)(cell->subdomain_index());
+        if (std::find(domains.begin(), domains.end(), n) == domains.end())
+        {
+            domains.push_back(n);
+        }
+        c++;
+    } while (c != done);
+
+    for (unsigned int i = 0; i < polyLinesC3t32.size(); i++)
+    {
+        bool isSame = true;
+        for (unsigned int k = 0; k < domains.size(); k++)
+        {
+            c = t2.incident_cells(polyLinesC3t32[i][0]);
+            bool b = true;
+            done = c;
+            do
+            {
+                C3t3::Cell_handle cell = c;
+                if ((int)(cell->subdomain_index()) == domains[k])
+                {
+                    b = false;
+                    break;
+                }
+                c++;
+            } while (c != done);
+            if (b)
+            {
+                isSame = false;
+                break;
+            }
+        }
+        if (isSame)
+        {
+            polyLines.push_back(polyLinesC3t32[i]);
+        }
+    }
+}
+// Fin getSamePolylines
 
 void Viewer::glFacet( const Facet & facet ){
     const Point_3 & pa = facet.first->vertex(m_indices[facet.second][0])->point();
@@ -245,10 +474,105 @@ void Viewer::init() {
     // Opens help window
     //help();
 
+    std::ifstream c3t3_load("data/out.mesh");
+    c3t3_load >> m_c3t3;
+
+    // remplissage des dimensions c3t3 + remplissages des egdes caracteristiques
+      std::vector<C3t3::Edge> CaracEdge;
+      c3t3Param(m_c3t3,CaracEdge);
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      std::cout << std::endl;
+
+      //test comparaisons
+      typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr>::Vertices_in_complex_iterator Complex_Vertex_Iterator;
+
+      // vertex ***************************
+
+      std::cout << "C3T3 Number of cells : " << m_c3t3.number_of_cells() << std::endl;
+      int i = 0;
+      std::map<C3t3::Vertex_handle, int> V;
+      for (Complex_Vertex_Iterator it = m_c3t3.vertices_in_complex_begin(); it != m_c3t3.vertices_in_complex_end(); ++it)
+      {
+        if (m_c3t3.in_dimension(it) == 0)
+        {
+          V[it] = i;
+          //std::cout << "Vertex #" << i << " : " << it->point() << " Dimension : " << c3t3.in_dimension(it) << std::endl;
+        }
+        i++;
+      }
+      std::cout << "Taille V : " << V.size() << " (nombre de vertex de dimension 0 dans c3t3)" << std::endl;
+
+      ///////////////////////////////////////////////
+      // edges ****************************************
+
+      i = 0;
+      std::map<C3t3::Edge, int> V_e;
+      for (C3t3::Edges_in_complex_iterator it = m_c3t3.edges_in_complex_begin(); it != m_c3t3.edges_in_complex_end(); ++it)
+      {
+        // add the current Point_3 to the map with its current index
+        C3t3::Edge edge = *it;
+        V_e[edge] = i;
+        ++i;
+      }
+      std::cout << "Taille V_e : " << V_e.size() << "(nombre d'edge caractéristiques dans c3t3)" << std::endl;
+
+      //////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////
+
+      //polylignes
+
+      std::cerr << "deb poly" << std::endl;
+        //c3t3
+        int curveNum_c3t3=1;
+      std::vector<bool> used;
+      for (unsigned int i = 0; i < CaracEdge.size(); i++){
+        used.push_back(false);
+      }
+
+      std::vector<std::vector<C3t3::Edge>> p;
+
+      for (unsigned int i = 0; i < CaracEdge.size(); i++){
+        if(used[i]==false){
+          std::vector<C3t3::Edge> tempPolyLine;
+          parcoursPoly(tempPolyLine, used, CaracEdge, i, m_c3t3,curveNum_c3t3);
+          polyLines.push_back(tempPolyLine);
+          curveNum_c3t3++;
+       }
+      }
+      std::cerr << "fin poly" << std::endl;
+
+      for (C3t3::Cells_in_complex_iterator cit = m_c3t3.cells_in_complex_begin () ; cit != m_c3t3.cells_in_complex_end (); ++cit ) {
+
+          m_subdomain_indices.insert(m_c3t3.subdomain_index(cit));
+
+      }
+
+      for (C3t3::Facets_in_complex_iterator fit = m_c3t3.facets_in_complex_begin () ; fit != m_c3t3.facets_in_complex_end (); ++fit ) {
+
+          m_surface_indices.insert(m_c3t3.surface_index(*fit));
+
+      }
+
+      int nb = 0;
+      for (auto it = m_subdomain_indices.begin(); it != m_subdomain_indices.end(); ++it){
+          QColor color;
+          color.setHsvF(0.05 + 0.9*double(nb++)/double(m_subdomain_indices.size()), 0.6 ,1. );
+          m_subdomain_colors[*it] = color;
+          std::cout << *it<< std::endl;
+      }
+
     // The ManipulatedFrame will be used to position the clipping plane
     setManipulatedFrame(new ManipulatedFrame());
 
-    m_center = 0;
+    CGAL::Bbox_3 bbox = m_c3t3.bbox();
+
+    m_center = qglviewer::Vec ((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.);
+    camera()->setSceneCenter(qglviewer::Vec((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.));
+    camera()->setSceneRadius(std::max(std::max(bbox.xmax() - bbox.xmin(), bbox.ymax() - bbox.ymin()), bbox.zmax() - bbox.zmin())*2.);
 
     camera()->showEntireScene();
     // Enable plane clipping
@@ -321,7 +645,7 @@ void Viewer::updateIndexPoly(int i, int j) {
         update();
 }
 
-void Viewer::updateC3t3(C3t3 c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc) {
+void Viewer::updateC3t3(C3t3 &c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc) {
     m_c3t3 = c;
     polyLines = p;
     m_subdomain_indices = sdi;

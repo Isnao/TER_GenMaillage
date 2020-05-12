@@ -67,7 +67,7 @@ public slots:
     void onlyFaces();
     void activePolyline(bool a, int i, int j);
     void updateIndexPoly(int i, int j);
-    void updateC3t3(C3t3 c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc);
+    void updateC3t3(C3t3 &c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc);
     int selectSubdomain(int i);
     void activeSubdomain(bool a, int i);
 };
