@@ -383,6 +383,10 @@ void Viewer::drawPolyline(){
 
 }
 
+void Viewer::drawSDP() {
+
+}
+
 void Viewer::drawVertices(){
 
     glDisable(GL_LIGHTING);
@@ -394,7 +398,7 @@ void Viewer::drawVertices(){
     glBegin(GL_POINTS);
 
     for( Tr::Finite_vertices_iterator vit = m_c3t3.triangulation().finite_vertices_begin(); vit != m_c3t3.triangulation().finite_vertices_end() ; ++vit  ){
-        if(m_c3t3.in_dimension(vit) < 2){
+        if(m_c3t3.in_dimension(vit) < 3){
             glColor4f( 0.f,0.f,1.f, 1.);
 
 
@@ -404,6 +408,8 @@ void Viewer::drawVertices(){
             } else if(m_c3t3.in_dimension(vit) == 1){
                 glColor4f( 1.f,0.f,0.f, 1.);
 
+            } else if ( m_c3t3.in_dimension(vit) == 2 ) {
+                glColor4f( 0.f,1.f,0.f, 1.);
             }
 
             Point_3 position = vit->point();
@@ -427,6 +433,8 @@ void Viewer::draw() {
         drawPolyline();
     if (SD)
         drawSD();
+    if (SDP)
+        drawSDP();
 
     /*glPushMatrix();
     glMultMatrixd(manipulatedFrame()->matrix());
@@ -676,12 +684,44 @@ void Viewer::activeSubdomain(bool a, int i) {
         E = false;
         F = false;
         P = false;
+        SDP = false;
     } else {
         V = false;
         E = false;
         P = false;
         F = true;
+        SDP = false;
     }
     std::cerr << "activeSubdomain(bool)" << std::endl;
     update();
+}
+
+int Viewer::selectSubdomainP(int i) {
+
+    indexSDP = i;
+    update();
+    return m_subdomain_indices.size();
+
+}
+
+void Viewer::activeSubdomainP(bool a, int i) {
+
+    SDP = a;
+    indexSDP = i;
+    if (SDP) {
+        V = false;
+        E = false;
+        F = false;
+        P = false;
+        SD = false;
+    } else {
+        V = false;
+        E = true;
+        P = false;
+        F = false;
+        SD = false;
+    }
+    std::cerr << "activeSubdomainP(bool)" << std::endl;
+    update();
+
 }

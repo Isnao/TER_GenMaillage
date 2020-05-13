@@ -28,6 +28,8 @@ public:
     QSpinBox *maillageNumber2;
     QCheckBox *activeSubdomain;
     QSpinBox *subdomain;
+    QCheckBox *activeSubdomainP;
+    QSpinBox *subdomainP;
 
 protected:
     std::vector<C3t3> c3t3_list;

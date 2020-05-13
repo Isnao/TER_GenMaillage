@@ -199,6 +199,15 @@ DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget
     subdomain->setRange(0, 2);
     viewGridLayout->addWidget(subdomain, 7, 1, 1, 1);
 
+    activeSubdomainP = new QCheckBox("Only polyline on one Subdomain ?", groupBox2);
+    viewGridLayout->addWidget(activeSubdomainP, 8, 0, 1, 2);
+    QLabel * l4 = new QLabel(groupBox2);
+    l4->setText("N° SubdomainP :");
+    viewGridLayout->addWidget(l4, 9, 0, 1, 1);
+    subdomainP = new QSpinBox(groupBox2);
+    subdomainP->setRange(0,2);
+    viewGridLayout->addWidget(subdomainP, 9, 1, 1, 1);
+
     connect(maillageNumber1, QOverload<int>::of(&QSpinBox::valueChanged), m_viewer1, [=](int i) {
         updateMaillage(i,m_viewer1);
     });
@@ -243,6 +252,14 @@ DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget
     });
     connect(subdomain, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int i) {
         subdomain->setRange(0,std::max(m_viewer1->selectSubdomain(i),m_viewer2->selectSubdomain(i)));
+    });
+
+    connect(activeSubdomainP, &QCheckBox::clicked, this, [=](bool b) {
+       m_viewer1->activeSubdomainP(b, subdomain->value());
+       m_viewer2->activeSubdomainP(b, subdomain->value());
+    });
+    connect(subdomainP, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int i) {
+       subdomainP->setRange(0,std::max(m_viewer1->selectSubdomainP(i), m_viewer2->selectSubdomainP(i)));
     });
 
     this->openMesh("data/out.mesh");
