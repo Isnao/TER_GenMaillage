@@ -19,6 +19,8 @@
  WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 *****************************************************************************/
+#ifndef MESH_VIEWER_H
+#define MESH_VIEWER_H
 
 #include "cgal_headers.h"
 #include <QGLViewer/qglviewer.h>
@@ -26,6 +28,7 @@
 #include <set>
 #include <map>
 #include <QColor>
+#include <stdio.h>
 
 class Viewer : public QGLViewer {
 protected:
@@ -45,6 +48,7 @@ protected:
     C3t3 m_c3t3;
 
     std::vector<std::vector<C3t3::Edge>> polyLines;
+
     std::vector<std::vector<std::vector<C3t3::Edge>>> groupPolyLines;
 
     int m_indices[4][3];
@@ -68,9 +72,11 @@ public slots:
     void onlyFaces();
     void activePolyline(bool a, int i, int j);
     void updateIndexPoly(int i, int j);
-    void updateC3t3(C3t3 &c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc);
+    void updateC3t3(C3t3 &c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc,std::vector<std::vector<std::vector<C3t3::Edge>>> g);
     int selectSubdomain(int i);
     void activeSubdomain(bool a, int i);
     int selectSubdomainP(int i);
     void activeSubdomainP(bool a, int i);
+
 };
+#endif 

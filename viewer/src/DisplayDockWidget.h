@@ -7,6 +7,7 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QSpinBox>
+#include <iostream>
 
 class DisplayDockWidget : public QDockWidget
 {
@@ -28,6 +29,9 @@ public:
     QSpinBox *maillageNumber2;
     QCheckBox *activeSubdomain;
     QSpinBox *subdomain;
+
+    std::vector<std::vector<std::vector<std::vector<C3t3::Edge>>>> groupsPolyLines;
+
     QCheckBox *activeSubdomainP;
     QSpinBox *subdomainP;
 

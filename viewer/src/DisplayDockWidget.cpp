@@ -5,11 +5,48 @@
 #include <QLabel>
 #include <QFileDialog>
 #include <algorithm>
-
 using namespace CGAL::parameters;
 
+void parcoursPolyBis(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, int point, C3t3& c3t3, int& curveNum) {
+    used[lineNum] = true;
+    polyLine.push_back(V[lineNum]);
+    c3t3.remove_from_complex(V[lineNum]);
+    c3t3.add_to_complex(V[lineNum], curveNum);
+    C3t3::Vertex_handle vertex;
+    if (point == 2) {
+        if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].third)) == 0) {
+            curveNum++;
+            return;
+        }
+        vertex = V[lineNum].first->vertex(V[lineNum].third);
+    }
+    else {
+        if (point == 3) {
+            if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].second)) == 0) {
+                curveNum++;
+                return;
+            }
+            vertex = V[lineNum].first->vertex(V[lineNum].second);
+        }
+    }
+    for (int i = 0; i < V.size(); i++) {
+        if ((V[i].first->vertex(V[i].second)) == vertex && used[i] == false) {
+            parcoursPolyBis(polyLine, used, V, i, 2, c3t3, curveNum);
+            return;
+        }
+        else {
+            if ((V[i].first->vertex(V[i].third)) == vertex && used[i] == false) {
+                parcoursPolyBis(polyLine, used, V, i, 3, c3t3, curveNum);
+                return;
+            }
+        }
+    }
+    curveNum++;
+}
+
+
 // edgeInVector :
-bool edgeInVector1(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
+bool edgeInVector(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
 {
     for (unsigned int i = 0; i < tab.size(); i++)
     {
@@ -21,7 +58,7 @@ bool edgeInVector1(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
 // Fin edgeInVector
 
 // c3t3Param :
-void c3t3Param1(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
+void c3t3Param(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
 {
     Tr &t = c3t3.triangulation();
     int c3t3CornerIndex = 0;
@@ -70,7 +107,7 @@ void c3t3Param1(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
             {
                 if ((c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 1 || c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 0) && (c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 0 || c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 1))
                 {
-                    if (edgeInVector1(edges[i], CaracEdge))
+                    if (edgeInVector(edges[i], CaracEdge))
                     {
                         nb_edges++;
                     }
@@ -110,7 +147,7 @@ void c3t3Param1(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
 // Fin c3t3Param
 
 // parcoursPoly :
-void parcoursPoly1(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, C3t3& c3t3, int curveNum) {
+void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, C3t3& c3t3, int curveNum) {
     used[lineNum] = true;
     polyLine.push_back(V[lineNum]);
     c3t3.remove_from_complex(V[lineNum]);
@@ -119,12 +156,12 @@ void parcoursPoly1(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used,
         if (used[i] == false) {
             if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].second)) == 1) {
                 if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].second) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].second)) {
-                    parcoursPoly1(polyLine, used, V, i, c3t3, curveNum);
+                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
                 }
             }
             if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].third)) == 1) {
                 if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].third) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].third)) {
-                    parcoursPoly1(polyLine, used, V, i, c3t3, curveNum);
+                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
                 }
             }
         }
@@ -132,6 +169,109 @@ void parcoursPoly1(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used,
 }
 // Fin parcoursPoly
 
+// groupPolylines
+void getGroupPolyline(C3t3& c3t3,Tr& t,std::vector<std::vector<C3t3::Edge>>& polyLines,std::vector<std::vector<std::vector<C3t3::Edge>>>& res){
+  std::vector<bool> used;
+  for(unsigned int i=0;i<polyLines.size();i++){
+    used.push_back(false);
+  }
+
+  for(unsigned int i=0;i<polyLines.size();i++){
+    if(!used[i]){
+      std::vector<std::vector<C3t3::Edge>> temp;
+      std::vector<int> domains;
+      Tr::Cell_circulator c=t.incident_cells(polyLines[i][0]);
+      Tr::Cell_circulator done=c;
+      do{
+        C3t3::Cell_handle cell=c;
+        int n=(int)(cell->subdomain_index());
+        if(std::find(domains.begin(), domains.end(), n) == domains.end()){
+          domains.push_back(n);
+        }
+        c++;
+      }while(c != done);
+
+      for(unsigned int j=i;j<polyLines.size();j++){
+        if(!used[j]){
+          bool isSame=true;
+          for(unsigned int k=0;k<domains.size();k++){
+            c=t.incident_cells(polyLines[j][0]);
+            bool b=true;
+            done=c;
+            do{
+              C3t3::Cell_handle cell=c;
+              if((int)(cell->subdomain_index())==domains[k]){
+                b=false;
+                break;
+              }
+              c++;
+            }while(c != done);
+            if(b){
+              isSame=false;
+              break;
+            }
+          }
+          if(isSame){
+            temp.push_back(polyLines[i]);
+            used[j]=true;
+          }
+        }
+      }
+
+      res.push_back(temp);
+    }
+  }
+}
+// Fin groupPolyLines
+
+// getSamePolylines
+void getSamePolylines(C3t3 &c3t31, Tr &t, C3t3 &c3t32, Tr &t2, C3t3::Edge e, std::vector<std::vector<C3t3::Edge>> &polyLinesC3t32, std::vector<std::vector<C3t3::Edge>> &polyLines)
+{ //c3t3,tr1,c3t32,tr2,e : one edge of the polyline in c3t3,polylignes of c3t32, the list of found polylines in c3t32 with same domains as v
+    std::vector<int> domains;
+    Tr::Cell_circulator c = t.incident_cells(e);
+    Tr::Cell_circulator done = c;
+    do
+    {
+        C3t3::Cell_handle cell = c;
+        int n = (int)(cell->subdomain_index());
+        if (std::find(domains.begin(), domains.end(), n) == domains.end())
+        {
+            domains.push_back(n);
+        }
+        c++;
+    } while (c != done);
+
+    for (unsigned int i = 0; i < polyLinesC3t32.size(); i++)
+    {
+        bool isSame = true;
+        for (unsigned int k = 0; k < domains.size(); k++)
+        {
+            c = t2.incident_cells(polyLinesC3t32[i][0]);
+            bool b = true;
+            done = c;
+            do
+            {
+                C3t3::Cell_handle cell = c;
+                if ((int)(cell->subdomain_index()) == domains[k])
+                {
+                    b = false;
+                    break;
+                }
+                c++;
+            } while (c != done);
+            if (b)
+            {
+                isSame = false;
+                break;
+            }
+        }
+        if (isSame)
+        {
+            polyLines.push_back(polyLinesC3t32[i]);
+        }
+    }
+}
+// Fin getSamePolylines
 
 DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget * parent ):QDockWidget(parent)
 {
@@ -262,8 +402,8 @@ DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget
        subdomainP->setRange(0,std::max(m_viewer1->selectSubdomainP(i), m_viewer2->selectSubdomainP(i)));
     });
 
-    this->openMesh("data/out.mesh");
 
+    this->openMesh("data/out.mesh");
     this->setWidget(contents);
 }
 
@@ -275,7 +415,7 @@ void DisplayDockWidget::openMesh(const QString &filename){
 
     // remplissage des dimensions c3t3 + remplissages des egdes caracteristiques
       std::vector<C3t3::Edge> CaracEdge;
-      c3t3Param1(t,CaracEdge);
+      c3t3Param(t,CaracEdge);
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -331,13 +471,28 @@ void DisplayDockWidget::openMesh(const QString &filename){
 
       std::vector<std::vector<C3t3::Edge>> p;
 
+        for (int i = 0; i < CaracEdge.size(); i++) {
+          if ((int)(t.in_dimension(CaracEdge[i].first->vertex(CaracEdge[i].second))) == 0 && used[i] == false) {
+              std::vector<C3t3::Edge> tempPolyLine;
+              parcoursPolyBis(tempPolyLine, used, CaracEdge, i, 2, t, curveNum_c3t3);
+              p.push_back(tempPolyLine);
+          }
+          else {
+              if ((int)(t.in_dimension(CaracEdge[i].first->vertex(CaracEdge[i].third))) == 0 && used[i] == false) {
+                  std::vector<C3t3::Edge> tempPolyLine;
+                  parcoursPolyBis(tempPolyLine, used, CaracEdge, i, 3, t, curveNum_c3t3);
+                  p.push_back(tempPolyLine);
+            }
+          }
+      }
+
       for (unsigned int i = 0; i < CaracEdge.size(); i++){
         if(used[i]==false){
           std::vector<C3t3::Edge> tempPolyLine;
-          parcoursPoly1(tempPolyLine, used, CaracEdge, i, t,curveNum_c3t3);
+          parcoursPoly(tempPolyLine, used, CaracEdge, i, t,curveNum_c3t3);
           p.push_back(tempPolyLine);
           curveNum_c3t3++;
-       }
+        }
       }
       std::cerr << "fin poly" << std::endl;
 
@@ -370,14 +525,15 @@ void DisplayDockWidget::openMesh(const QString &filename){
       subdomain_indices_list.push_back(sdi);
       surface_indices_list.push_back(sfi);
       subdomain_colors_list.push_back(sdc);
-//      getGroupPolyline(t,t.triangulation(),p,groupPolyLines);
-
+      std::vector<std::vector<std::vector<C3t3::Edge>>> groupPolyLines;
+      getGroupPolyline(t,t.triangulation(),p,groupPolyLines);
+      groupsPolyLines.push_back(groupPolyLines);
 }
 
 void DisplayDockWidget::updateMaillage(int i, Viewer * v) {
 
     if (i < (int)c3t3_list.size()) {
-        v->updateC3t3(c3t3_list.at(i), polyLines_list.at(i), subdomain_indices_list.at(i), surface_indices_list.at(i), subdomain_colors_list.at(i));
+        v->updateC3t3(c3t3_list.at(i), polyLines_list.at(i), subdomain_indices_list.at(i), surface_indices_list.at(i), subdomain_colors_list.at(i), groupsPolyLines.at(i));
     } else
         std::cerr << "Error : not in range" << std::endl;
 

@@ -28,10 +28,48 @@
 
 using namespace std;
 using namespace qglviewer;
+
 using namespace CGAL::parameters;
 
+void parcoursPolyBis1(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, int point, C3t3& c3t3, int& curveNum) {
+    used[lineNum] = true;
+    polyLine.push_back(V[lineNum]);
+    c3t3.remove_from_complex(V[lineNum]);
+    c3t3.add_to_complex(V[lineNum], curveNum);
+    C3t3::Vertex_handle vertex;
+    if (point == 2) {
+        if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].third)) == 0) {
+            curveNum++;
+            return;
+        }
+        vertex = V[lineNum].first->vertex(V[lineNum].third);
+    }
+    else {
+        if (point == 3) {
+            if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].second)) == 0) {
+                curveNum++;
+                return;
+            }
+            vertex = V[lineNum].first->vertex(V[lineNum].second);
+        }
+    }
+    for (int i = 0; i < V.size(); i++) {
+        if ((V[i].first->vertex(V[i].second)) == vertex && used[i] == false) {
+            parcoursPolyBis1(polyLine, used, V, i, 2, c3t3, curveNum);
+            return;
+        }
+        else {
+            if ((V[i].first->vertex(V[i].third)) == vertex && used[i] == false) {
+                parcoursPolyBis1(polyLine, used, V, i, 3, c3t3, curveNum);
+                return;
+            }
+        }
+    }
+    curveNum++;
+}
+
 // edgeInVector :
-bool edgeInVector(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
+bool edgeInVector1(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
 {
     for (unsigned int i = 0; i < tab.size(); i++)
     {
@@ -43,7 +81,7 @@ bool edgeInVector(C3t3::Edge &edge, std::vector<C3t3::Edge> &tab)
 // Fin edgeInVector
 
 // c3t3Param :
-void c3t3Param(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
+void c3t3Param1(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
 {
     Tr &t = c3t3.triangulation();
     int c3t3CornerIndex = 0;
@@ -92,7 +130,7 @@ void c3t3Param(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
             {
                 if ((c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 1 || c3t3.in_dimension(edges[i].first->vertex(edges[i].second)) == 0) && (c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 0 || c3t3.in_dimension(edges[i].first->vertex(edges[i].third)) == 1))
                 {
-                    if (edgeInVector(edges[i], CaracEdge))
+                    if (edgeInVector1(edges[i], CaracEdge))
                     {
                         nb_edges++;
                     }
@@ -132,7 +170,7 @@ void c3t3Param(C3t3 &c3t3, std::vector<C3t3::Edge> &CaracEdge)
 // Fin c3t3Param
 
 // parcoursPoly :
-void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, C3t3& c3t3, int curveNum) {
+void parcoursPoly1(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, std::vector< C3t3::Edge >& V, int lineNum, C3t3& c3t3, int curveNum) {
     used[lineNum] = true;
     polyLine.push_back(V[lineNum]);
     c3t3.remove_from_complex(V[lineNum]);
@@ -141,12 +179,12 @@ void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, 
         if (used[i] == false) {
             if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].second)) == 1) {
                 if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].second) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].second)) {
-                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
+                    parcoursPoly1(polyLine, used, V, i, c3t3, curveNum);
                 }
             }
             if (c3t3.in_dimension(V[lineNum].first->vertex(V[lineNum].third)) == 1) {
                 if ((V[i].first->vertex(V[i].second)) == V[lineNum].first->vertex(V[lineNum].third) || (V[i].first->vertex(V[i].third)) == V[lineNum].first->vertex(V[lineNum].third)) {
-                    parcoursPoly(polyLine, used, V, i, c3t3, curveNum);
+                    parcoursPoly1(polyLine, used, V, i, c3t3, curveNum);
                 }
             }
         }
@@ -155,7 +193,7 @@ void parcoursPoly(std::vector< C3t3::Edge >& polyLine, std::vector<bool>& used, 
 // Fin parcoursPoly
 
 // groupPolylines
-void getGroupPolyline(C3t3& c3t3,Tr& t,std::vector<std::vector<C3t3::Edge>>& polyLines,std::vector<std::vector<std::vector<C3t3::Edge>>>& res){
+void getGroupPolyline1(C3t3& c3t3,Tr& t,std::vector<std::vector<C3t3::Edge>>& polyLines,std::vector<std::vector<std::vector<C3t3::Edge>>>& res){
   std::vector<bool> used;
   for(unsigned int i=0;i<polyLines.size();i++){
     used.push_back(false);
@@ -210,7 +248,7 @@ void getGroupPolyline(C3t3& c3t3,Tr& t,std::vector<std::vector<C3t3::Edge>>& pol
 // Fin groupPolyLines
 
 // getSamePolylines
-void getSamePolylines(C3t3 &c3t31, Tr &t, C3t3 &c3t32, Tr &t2, C3t3::Edge e, std::vector<std::vector<C3t3::Edge>> &polyLinesC3t32, std::vector<std::vector<C3t3::Edge>> &polyLines)
+void getSamePolylines1(C3t3 &c3t31, Tr &t, C3t3 &c3t32, Tr &t2, C3t3::Edge e, std::vector<std::vector<C3t3::Edge>> &polyLinesC3t32, std::vector<std::vector<C3t3::Edge>> &polyLines)
 { //c3t3,tr1,c3t32,tr2,e : one edge of the polyline in c3t3,polylignes of c3t32, the list of found polylines in c3t32 with same domains as v
     std::vector<int> domains;
     Tr::Cell_circulator c = t.incident_cells(e);
@@ -258,6 +296,18 @@ void getSamePolylines(C3t3 &c3t31, Tr &t, C3t3 &c3t32, Tr &t2, C3t3::Edge e, std
 }
 // Fin getSamePolylines
 
+void printPolyligne(std::vector<C3t3::Edge> &polyLine)
+{
+    std::cout << "Polyline :" << std::endl;
+    for (unsigned int j = 0; j < polyLine.size(); j++)
+    {
+        C3t3::Vertex_handle p1 = polyLine[j].first->vertex(polyLine[j].second);
+        C3t3::Vertex_handle p2 = polyLine[j].first->vertex(polyLine[j].third);
+        std::cout << "\tvertex 1 : " << p1->point()
+                  << " , \tVertex 2 : " << p2->point() << std::endl;
+    }
+}
+
 void Viewer::glFacet( const Facet & facet ){
     const Point_3 & pa = facet.first->vertex(m_indices[facet.second][0])->point();
     const Point_3 & pb = facet.first->vertex(m_indices[facet.second][1])->point();
@@ -303,12 +353,10 @@ void Viewer::drawBoundaries(){
 void Viewer::drawSD(){
 
     glEnable(GL_LIGHTING);
+
+
     glBegin(GL_TRIANGLES);
 
-    /*for (auto it = m_surface_indices.begin(); it != m_surface_indices.end(); ++it){
-        Surface_index surface_index = *it;
-        QColor color = m_subdomain_colors[it->second];
-        glColor4f(color.redF(), color.greenF(), color.blueF(), 1.);*/
     QColor color = m_subdomain_colors[indexSD];
     glColor4f(color.redF(), color.greenF(), color.blueF(), 1.);
         for (C3t3::Facets_in_complex_iterator fit = m_c3t3.facets_in_complex_begin() ; fit != m_c3t3.facets_in_complex_end (); ++fit ) {
@@ -323,9 +371,48 @@ void Viewer::drawSD(){
             }
 
         }
-    //}
+   
+    glEnd();
+
+}
+
+void Viewer::drawSDP(){
+
+    glDisable(GL_LIGHTING);
+    glLineWidth (2.0f);
+
+   glColor4f( 1., 0.8, 0., 1.);
+
+    glBegin(GL_LINES);
+
+	Tr& t = m_c3t3.triangulation();
+    for (C3t3::Edges_in_complex_iterator eit = m_c3t3.edges_in_complex_begin () ; eit != m_c3t3.edges_in_complex_end (); ++eit ){
+    	bool ok=false;
+
+        Tr::Cell_circulator c = t.incident_cells(*eit);
+        Tr::Cell_circulator done = c;
+        do {
+           	if ((int)(c->subdomain_index()) == indexSDP){
+           	    ok=true;
+                break;
+            }
+            c++;
+        }while (c != done);
+
+        if (ok){
+                
+            Point_3 from = eit->first->vertex( eit->second )->point();
+        	Point_3 to = eit->first->vertex( eit->third )->point();
+
+        	glVertex3f( from.x(), from.y(), from.z() );
+        	glVertex3f( to.x(), to.y(), to.z() );
+        }
+
+    }
+
     glEnd();
 }
+
 
 void Viewer::drawEdges(){
 
@@ -359,31 +446,53 @@ void Viewer::drawPolyline(){
     glDisable(GL_LIGHTING);
     glLineWidth (2.0f);
 
-    glColor4f( 0.,0.,0., 0.5);
-
     glBegin(GL_LINES);
+    glColor4f( 1., 0.8, 0., 0.5);
 
-    for (C3t3::Edges_in_complex_iterator eit = m_c3t3.edges_in_complex_begin () ; eit != m_c3t3.edges_in_complex_end (); ++eit ) {
+    for (C3t3::Edges_in_complex_iterator eit = m_c3t3.edges_in_complex_begin () ; eit != m_c3t3.edges_in_complex_end (); ++eit ){
 
-        for (int i = 0; i < (int)polyLines[indexP].size(); i++) {
-            if (polyLines[indexP][i] == *eit) {
-                glColor4f( 1., 0.8, 0., 1.);
-                break;
-            }
+        if ((int)(m_c3t3.curve_segment_index(*eit)) == indexP){
+
+            Point_3 from = eit->first->vertex( eit->second )->point();
+        	Point_3 to = eit->first->vertex( eit->third )->point();
+
+        	glVertex3f( from.x(), from.y(), from.z() );
+        	glVertex3f( to.x(), to.y(), to.z() );
         }
-
-        Point_3 from = eit->first->vertex( eit->second )->point();
-        Point_3 to = eit->first->vertex( eit->third )->point();
-
-        glVertex3f( from.x(), from.y(), from.z() );
-        glVertex3f( to.x(), to.y(), to.z() );
     }
 
+
+    /*
+	if(indexP >= (int)groupPolyLines.size()){
+		std::cout<<"Indice polylignes hors range !!!"<<std::endl;
+	}
+
+    for(unsigned int i=0;i<groupPolyLines[indexP].size();i++){
+    	printPolyligne(groupPolyLines[indexP][i]);
+	}
+
+	for(unsigned int i=0;i<groupPolyLines[indexP].size();i++){
+		for(unsigned int j=0;j<groupPolyLines[indexP][i].size();j++){
+			std::cout<<groupPolyLines[indexP][i][j].first->vertex(groupPolyLines[indexP][i][j].second)->point()<<std::endl;
+			std::cout<<"oui"<<std::endl;
+
+			glColor4f( 1., 0.8, 0., 1.);
+
+        	Point_3 from = groupPolyLines[indexP][i][j].first->vertex(groupPolyLines[indexP][i][j].second)->point();
+        	std::cout<<"oui2"<<std::endl;
+        	Point_3 to = groupPolyLines[indexP][i][j].first->vertex( groupPolyLines[indexP][i][j].third)->point();
+
+        	std::cout<<"oui3"<<std::endl;
+
+       		glVertex3f( from.x(), from.y(), from.z() );
+       		std::cout<<"oui4"<<std::endl;
+        	glVertex3f( to.x(), to.y(), to.z() );
+        	std::cout<<"oui5"<<std::endl;
+		}
+    }
+    */
+
     glEnd();
-
-}
-
-void Viewer::drawSDP() {
 
 }
 
@@ -407,15 +516,15 @@ void Viewer::drawVertices(){
 
             } else if(m_c3t3.in_dimension(vit) == 1){
                 glColor4f( 1.f,0.f,0.f, 1.);
-
-            } else if ( m_c3t3.in_dimension(vit) == 2 ) {
+            }
+           	else if (m_c3t3.in_dimension(vit) == 2 ) {
                 glColor4f( 0.f,1.f,0.f, 1.);
             }
+
 
             Point_3 position = vit->point();
             glVertex3f( position.x(), position.y(), position.z() );
         }
-
     }
     glEnd();
 }
@@ -460,14 +569,16 @@ void Viewer::draw() {
 
 void Viewer::init() {
 
-    E = false;
+    E = true;
     V = false;
-    F = true;
+    F = false;
     P = false;
     SD = false;
+    SDP= false;
     indexP = 0;
     indexSP = 0;
     indexSD = 0;
+    indexSDP = 0;
 
     m_indices[0][0] = 3; m_indices[0][2] = 1; m_indices[0][1] = 2;
     m_indices[1][0] = 3; m_indices[1][2] = 2; m_indices[1][1] = 0;
@@ -485,7 +596,7 @@ void Viewer::init() {
 
     // remplissage des dimensions c3t3 + remplissages des egdes caracteristiques
       std::vector<C3t3::Edge> CaracEdge;
-      c3t3Param(m_c3t3,CaracEdge);
+      c3t3Param1(m_c3t3,CaracEdge);
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////
       ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,10 +652,26 @@ void Viewer::init() {
 
       std::vector<std::vector<C3t3::Edge>> p;
 
+      
+    	for (int i = 0; i < CaracEdge.size(); i++) {
+      		if ((int)(m_c3t3.in_dimension(CaracEdge[i].first->vertex(CaracEdge[i].second))) == 0 && used[i] == false) {
+          		std::vector<C3t3::Edge> tempPolyLine;
+          		parcoursPolyBis1(tempPolyLine, used, CaracEdge, i, 2, m_c3t3, curveNum_c3t3);
+          		p.push_back(tempPolyLine);
+      		}
+      		else {
+          		if ((int)(m_c3t3.in_dimension(CaracEdge[i].first->vertex(CaracEdge[i].third))) == 0 && used[i] == false) {
+              		std::vector<C3t3::Edge> tempPolyLine;
+              		parcoursPolyBis1(tempPolyLine, used, CaracEdge, i, 3, m_c3t3, curveNum_c3t3);
+              		p.push_back(tempPolyLine);
+         	 	}
+      		}
+  		}
+
       for (unsigned int i = 0; i < CaracEdge.size(); i++){
         if(used[i]==false){
           std::vector<C3t3::Edge> tempPolyLine;
-          parcoursPoly(tempPolyLine, used, CaracEdge, i, m_c3t3,curveNum_c3t3);
+          parcoursPoly1(tempPolyLine, used, CaracEdge, i, m_c3t3,curveNum_c3t3);
           polyLines.push_back(tempPolyLine);
           curveNum_c3t3++;
        }
@@ -651,13 +778,14 @@ void Viewer::updateIndexPoly(int i, int j) {
         update();
 }
 
-void Viewer::updateC3t3(C3t3 &c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc) {
+void Viewer::updateC3t3(C3t3 &c, std::vector<std::vector<C3t3::Edge>> p, std::set<Subdomain_index> sdi, std::set<Surface_index> sfi, std::map<Subdomain_index, QColor> sdc,std::vector<std::vector<std::vector<C3t3::Edge>>> g) {
     m_c3t3 = c;
     polyLines = p;
     m_subdomain_indices = sdi;
     m_surface_indices = sfi;
     m_subdomain_colors = sdc;
     CGAL::Bbox_3 bbox = m_c3t3.bbox();
+    groupPolyLines = g;
 
     m_center = qglviewer::Vec ((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.);
     camera()->setSceneCenter(qglviewer::Vec((bbox.xmax() - bbox.xmin())/2., (bbox.ymax() - bbox.ymin())/2., (bbox.zmax() - bbox.zmin())/2.));
@@ -684,13 +812,13 @@ void Viewer::activeSubdomain(bool a, int i) {
         E = false;
         F = false;
         P = false;
-        SDP = false;
+        SDP=false;
     } else {
         V = false;
         E = false;
         P = false;
         F = true;
-        SDP = false;
+        SDP=false;
     }
     std::cerr << "activeSubdomain(bool)" << std::endl;
     update();
@@ -714,6 +842,7 @@ void Viewer::activeSubdomainP(bool a, int i) {
         F = false;
         P = false;
         SD = false;
+        
     } else {
         V = false;
         E = true;
