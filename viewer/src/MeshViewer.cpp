@@ -854,3 +854,7 @@ void Viewer::activeSubdomainP(bool a, int i) {
     update();
 
 }
+
+
+void Viewer::activeProjPoly(bool a, int i){}
+void Viewer::projection(C3t3 &c1, std::vector<C3t3::Edge> poly){}

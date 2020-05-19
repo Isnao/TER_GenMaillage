@@ -29,6 +29,8 @@ public:
     QSpinBox *maillageNumber2;
     QCheckBox *activeSubdomain;
     QSpinBox *subdomain;
+    QCheckBox *projPoly;
+    QSpinBox *projPolySB;
 
     std::vector<std::vector<std::vector<std::vector<C3t3::Edge>>>> groupsPolyLines;
 

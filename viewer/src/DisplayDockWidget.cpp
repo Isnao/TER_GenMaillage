@@ -289,13 +289,13 @@ DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget
     QGridLayout * test = new QGridLayout(groupBox);
 
     QLabel * l = new QLabel(groupBox);
-    l->setText("C3t3 numéro VD :");
+    l->setText("C3t3 numéro VG :");
     test->addWidget(l, 0, 0, 1, 1);
     maillageNumber1 = new QSpinBox(groupBox);
     maillageNumber1->setRange(0,0);
     test->addWidget(maillageNumber1, 0, 1, 1, 1);
     QLabel * lb = new QLabel(groupBox);
-    lb->setText("C3t3 numéro VG :");
+    lb->setText("C3t3 numéro VD :");
     test->addWidget(lb, 1, 0, 1, 1);
     maillageNumber2 = new QSpinBox(groupBox);
     maillageNumber2->setRange(0,0);
@@ -304,49 +304,65 @@ DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget
     QGroupBox * groupBox2 = new QGroupBox("View",parent);
     groupBox2->setMaximumSize(QSize(8388607, 200));
     contentLayout->addWidget ( groupBox2) ;
+
+    QGroupBox * groupBox3 = new QGroupBox("Comparaison",parent);
+    groupBox3->setMaximumSize(QSize(8388607, 200));
+    contentLayout->addWidget( groupBox3);
+
     addMaillage = new QPushButton("ADD NEW C3T3", parent);
     contentLayout->addWidget(addMaillage);
 
     QGridLayout * viewGridLayout = new QGridLayout(groupBox2);
     QPushButton * Edges = new QPushButton("Only Edges", groupBox2);
-    viewGridLayout->addWidget(Edges, 0, 0, 1, 2);
+    viewGridLayout->addWidget(Edges, 0, 0, 1, 1);
     QPushButton * Faces = new QPushButton("Only Faces", groupBox2);
-    viewGridLayout->addWidget(Faces, 1, 0, 1, 2);
+    viewGridLayout->addWidget(Faces, 1, 0, 1, 1);
     QPushButton * Vertices = new QPushButton("Only Vertices", groupBox2);
-    viewGridLayout->addWidget(Vertices, 2, 0, 1, 2);
+    viewGridLayout->addWidget(Vertices, 2, 0, 1, 1);
 
-    QCheckBox * CurvesActive = new QCheckBox("Only Polyline ?", groupBox2);
-    viewGridLayout->addWidget(CurvesActive, 3, 0, 1, 2);
-    QLabel * l1 = new QLabel(groupBox2);
+    QGridLayout * compGridLayout = new QGridLayout(groupBox3);
+
+    QCheckBox * CurvesActive = new QCheckBox("Only Polyline ?", groupBox3);
+    compGridLayout->addWidget(CurvesActive, 1, 0, 1, 2);
+    QLabel * l1 = new QLabel(groupBox3);
     l1->setText("N° Curve(poly) :");
-    viewGridLayout->addWidget(l1, 4, 0, 1, 1);
-    QSpinBox * Curves = new QSpinBox( groupBox2);
-    viewGridLayout->addWidget(Curves, 4, 1, 1, 1);
+    compGridLayout->addWidget(l1, 2, 0, 1, 1);
+    QSpinBox * Curves = new QSpinBox( groupBox3);
+    compGridLayout->addWidget(Curves, 2, 1, 1, 1);
 
-    QLabel * l2 = new QLabel(groupBox2);
+    QLabel * l2 = new QLabel(groupBox3);
     l2->setText("N° Edge(poly) :");
-    viewGridLayout->addWidget(l2, 5, 0, 1, 1);
-    EdgesPolyligne = new QSpinBox( groupBox2);
-    viewGridLayout->addWidget(EdgesPolyligne, 5, 1, 1, 1);
+    compGridLayout->addWidget(l2, 3, 0, 1, 1);
+    EdgesPolyligne = new QSpinBox( groupBox3);
+    compGridLayout->addWidget(EdgesPolyligne, 3, 1, 1, 1);
 
-    QCheckBox * activeSubdomain = new QCheckBox("Only one Subdomain ?", groupBox2);
-    viewGridLayout->addWidget(activeSubdomain, 6, 0, 1, 2);
+    QCheckBox * activeSubdomain = new QCheckBox("Only one Subdomain ?", groupBox3);
+    compGridLayout->addWidget(activeSubdomain, 4, 0, 1, 2);
 
-    QLabel * l3 = new QLabel(groupBox2);
+    QLabel * l3 = new QLabel(groupBox3);
     l3->setText("N° SubDomain :");
-    viewGridLayout->addWidget(l3, 7, 0, 1, 1);
-    subdomain = new QSpinBox( groupBox2);
+    compGridLayout->addWidget(l3, 5, 0, 1, 1);
+    subdomain = new QSpinBox( groupBox3);
     subdomain->setRange(0, 2);
-    viewGridLayout->addWidget(subdomain, 7, 1, 1, 1);
+    compGridLayout->addWidget(subdomain, 5, 1, 1, 1);
 
-    activeSubdomainP = new QCheckBox("Only polyline on one Subdomain ?", groupBox2);
-    viewGridLayout->addWidget(activeSubdomainP, 8, 0, 1, 2);
-    QLabel * l4 = new QLabel(groupBox2);
+    activeSubdomainP = new QCheckBox("Only polyline on one Subdomain ?", groupBox3);
+    compGridLayout->addWidget(activeSubdomainP, 6, 0, 1, 2);
+    QLabel * l4 = new QLabel(groupBox3);
     l4->setText("N° SubdomainP :");
-    viewGridLayout->addWidget(l4, 9, 0, 1, 1);
-    subdomainP = new QSpinBox(groupBox2);
+    compGridLayout->addWidget(l4, 7, 0, 1, 1);
+    subdomainP = new QSpinBox(groupBox3);
     subdomainP->setRange(0,2);
-    viewGridLayout->addWidget(subdomainP, 9, 1, 1, 1);
+    compGridLayout->addWidget(subdomainP, 7, 1, 1, 1);
+
+    projPoly = new QCheckBox("Projection polyligne sur viewer droite", groupBox3);
+    compGridLayout->addWidget(projPoly, 8, 0, 1, 2);
+    QLabel * l5 = new QLabel(groupBox3);
+    l5->setText("N° polyligne :");
+    compGridLayout->addWidget(l5, 9, 0, 1, 1);
+    projPolySB = new QSpinBox(groupBox3);
+    projPolySB->setRange(0,2);
+    compGridLayout->addWidget(projPolySB, 9, 1, 1, 1);
 
     connect(maillageNumber1, QOverload<int>::of(&QSpinBox::valueChanged), m_viewer1, [=](int i) {
         updateMaillage(i,m_viewer1);
@@ -400,6 +416,16 @@ DisplayDockWidget::DisplayDockWidget(Viewer * viewer1, Viewer * viewer2, QWidget
     });
     connect(subdomainP, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int i) {
        subdomainP->setRange(0,std::max(m_viewer1->selectSubdomainP(i), m_viewer2->selectSubdomainP(i)));
+    });
+
+    connect(projPoly, &QCheckBox::clicked, this, [=](bool b) {
+        m_viewer1->activePolyline(b,projPolySB->value(),0);
+        m_viewer2->activeProjPoly(b,projPolySB->value());
+    });
+    connect(projPolySB, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int i) {
+        m_viewer1->updateIndexPoly(i, 0);
+        int t = maillageNumber1->value();
+        m_viewer2->projection(c3t3_list.at(t), polyLines_list.at(t).at(i));
     });
 
 

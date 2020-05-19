@@ -77,6 +77,8 @@ public slots:
     void activeSubdomain(bool a, int i);
     int selectSubdomainP(int i);
     void activeSubdomainP(bool a, int i);
+    void activeProjPoly(bool a, int i);
+    void projection(C3t3 &c1, std::vector<C3t3::Edge> poly);
 
 };
 #endif 
